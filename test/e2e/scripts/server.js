@@ -53,7 +53,6 @@ async function start(dir) {
             }, 100);
         });
 
-
         server = app.listen(3000, resolve);
     });
 }
