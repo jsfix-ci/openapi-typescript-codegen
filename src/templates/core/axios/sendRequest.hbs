@@ -21,5 +21,13 @@ async function sendRequest(
 
     onCancel(() => source.cancel('The user aborted a request.'));
 
-    return await axios.request(config);
+    try {
+        return await axios.request(config);
+    } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+            return axiosError.response;
+        }
+        throw error;
+    }
 }

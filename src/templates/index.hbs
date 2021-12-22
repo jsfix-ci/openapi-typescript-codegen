@@ -2,7 +2,7 @@
 {{#if @root.exportCore}}
 
 export { ApiError } from './core/ApiError';
-export { CancelablePromise } from './core/CancelablePromise';
+export { CancelablePromise, CancelError } from './core/CancelablePromise';
 {{#if @root.exportClient}}
 export type { ApiRequestOptions } from './core/ApiRequestOptions';
 export type { ApiResult } from './core/ApiResult';

@@ -79,4 +79,8 @@ export function registerHandlebarHelpers(root: {
             );
         }
     );
+
+    Handlebars.registerHelper('escapeQuotes', function (value: string): string {
+        return value.replace(/(')/g, '\\$1');
+    });
 }

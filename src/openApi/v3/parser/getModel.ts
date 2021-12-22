@@ -165,7 +165,7 @@ export function getModel(
         model.default = getModelDefault(definition, model);
 
         if (definition.properties) {
-            const modelProperties = getModelProperties(openApi, definition, getModel);
+            const modelProperties = getModelProperties(openApi, definition, getModel, model);
             modelProperties.forEach(modelProperty => {
                 model.imports.push(...modelProperty.imports);
                 model.enums.push(...modelProperty.enums);
@@ -185,7 +185,7 @@ export function getModel(
         model.type = definitionType.type;
         model.base = definitionType.base;
         model.template = definitionType.template;
-        model.isNullable = definitionType.isNullable;
+        model.isNullable = definitionType.isNullable || model.isNullable;
         model.imports.push(...definitionType.imports);
         model.default = getModelDefault(definition, model);
         return model;
