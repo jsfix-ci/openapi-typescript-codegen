@@ -25,7 +25,6 @@ export function getOperation(
     const operationNameFallback = `${method}${serviceName}`;
     const operationName = getOperationName(op.operationId || operationNameFallback);
     const operationPath = getOperationPath(url);
-
     // Create a new operation object for this method.
     const operation: Operation = {
         service: serviceName,

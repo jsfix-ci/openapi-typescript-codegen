@@ -6,9 +6,22 @@ import camelCase from 'camelcase';
  * the most popular Javascript and Typescript writing style.
  */
 export function getOperationName(value: string): string {
-    const clean = value
+    let clean = value
         .replace(/^[^a-zA-Z]+/g, '')
         .replace(/[^\w\-]+/g, '-')
         .trim();
+
+    if (clean.startsWith('List')) {
+        clean = 'List';
+    } else if (clean.startsWith('Fetch')) {
+        clean = 'Fetch';
+    } else if (clean.startsWith('Create')) {
+        clean = 'Create';
+    } else if (clean.startsWith('Update')) {
+        clean = 'Update';
+    } else if (clean.startsWith('Remove')) {
+        clean = 'Remove';
+    }
+
     return camelCase(clean);
 }
