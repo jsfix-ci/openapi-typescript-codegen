@@ -1,12 +1,12 @@
 # OpenAPI Typescript Codegen
 
-[![NPM][npm-image]][npm-url]
+<!-- [![NPM][npm-image]][npm-url] -->
 [![License][license-image]][license-url]
-[![Coverage][coverage-image]][coverage-url]
+<!-- [![Coverage][coverage-image]][coverage-url]
 [![Quality][quality-image]][quality-url]
 [![Code Climate][climate-image]][climate-url]
 [![Downloads][downloads-image]][downloads-url]
-[![Build][build-image]][build-url]
+[![Build][build-image]][build-url] -->
 
 > Node.js library that generates Typescript clients based on the OpenAPI specification.
 

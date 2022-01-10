@@ -34,7 +34,21 @@ describe('writeClient', () => {
             },
         };
 
-        await writeClient(client, templates, './dist', HttpClient.FETCH, false, false, true, true, true, true, false, 'AppClient');
+        await writeClient(
+            client,
+            templates,
+            './dist',
+            HttpClient.FETCH,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            '',
+            false,
+            'AppClient'
+        );
 
         expect(rmdir).toBeCalled();
         expect(mkdir).toBeCalled();

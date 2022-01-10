@@ -23,7 +23,7 @@ export class {{{clientName}}} {{#if service}}extends {{{service.name}}} {{/if}}{
             BASE: openApiConfig?.BASE ?? '{{{server}}}',
             VERSION: openApiConfig?.VERSION ?? '{{{version}}}',
             WITH_CREDENTIALS: openApiConfig?.WITH_CREDENTIALS ?? false,
-            CREDENTIALS: openApiConfig?.CREDENTIALS ?? 'include',
+            CREDENTIALS: openApiConfig?.CREDENTIALS ?? 'same-origin',
             TOKEN: openApiConfig?.TOKEN,
             USERNAME: openApiConfig?.USERNAME,
             PASSWORD: openApiConfig?.PASSWORD,

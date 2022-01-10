@@ -29,11 +29,12 @@ describe('writeAppClient', () => {
                 apiRequestOptions: () => 'apiRequestOptions',
                 apiResult: () => 'apiResult',
                 baseHttpRequest: () => 'baseHttpRequest',
+                cancelablePromise: () => 'cancelablePromise',
                 concreteHttpRequest: () => 'concreteHttpRequest',
             },
         };
 
-        await writeAppClient(client, templates, '/', HttpClient.FETCH, 'AppClient');
+        await writeAppClient(client, templates, '/', HttpClient.FETCH, 'AppClient', '');
         expect(writeFile).toBeCalledWith('/client.ts', 'client');
     });
 });

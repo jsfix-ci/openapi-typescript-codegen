@@ -20,8 +20,3 @@ export type Options = {
 };
 
 export declare function generate(options: Options): Promise<void>;
-
-export default {
-    HttpClient,
-    generate,
-};
