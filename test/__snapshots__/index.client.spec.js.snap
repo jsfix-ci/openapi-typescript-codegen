@@ -5546,6 +5546,21 @@ export type CompositionWithOneOfAnonymous = {
 "
 `;
 
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/CompositionWithOneOfDiscriminator.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+
+import type { ModelCircle } from './ModelCircle';
+import type { ModelSquare } from './ModelSquare';
+
+/**
+ * This is a model with one property with a 'one of' relationship where the options are not $ref
+ */
+export type CompositionWithOneOfDiscriminator = (ModelCircle | ModelSquare);
+"
+`;
+
 exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/DictionaryWithArray.ts 1`] = `
 "/* istanbul ignore file */
 /* tslint:disable */
@@ -5683,6 +5698,51 @@ export enum EnumWithStrings {
     WARNING = 'Warning',
     ERROR = 'Error',
 }"
+`;
+
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/File.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+
+export type File = {
+    readonly id?: string;
+    readonly updated_at?: string;
+    readonly created_at?: string;
+    mime: string;
+    readonly file?: string;
+}
+"
+`;
+
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/ModelCircle.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+
+/**
+ * Circle
+ */
+export type ModelCircle = {
+    kind: 'circle';
+    radius?: number;
+}
+"
+`;
+
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/ModelSquare.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+
+/**
+ * Square
+ */
+export type ModelSquare = {
+    kind: 'square';
+    sideLength?: number;
+}
+"
 `;
 
 exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/ModelThatExtends.ts 1`] = `
@@ -6455,6 +6515,21 @@ export const $CompositionWithOneOfAnonymous = {
 } as const;"
 `;
 
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/schemas/$CompositionWithOneOfDiscriminator.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export const $CompositionWithOneOfDiscriminator = {
+    type: 'one-of',
+    description: \`This is a model with one property with a 'one of' relationship where the options are not $ref\`,
+    contains: [{
+        type: 'ModelCircle',
+    }, {
+        type: 'ModelSquare',
+    }],
+} as const;"
+`;
+
 exports[`v3 should generate with exportClient: ./test/generated/v3_client/schemas/$DictionaryWithArray.ts 1`] = `
 "/* istanbul ignore file */
 /* tslint:disable */
@@ -6561,6 +6636,78 @@ exports[`v3 should generate with exportClient: ./test/generated/v3_client/schema
 /* eslint-disable */
 export const $EnumWithStrings = {
     type: 'Enum',
+} as const;"
+`;
+
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/schemas/$File.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export const $File = {
+    properties: {
+        id: {
+            type: 'string',
+            isReadOnly: true,
+            minLength: 1,
+        },
+        updated_at: {
+            type: 'string',
+            isReadOnly: true,
+            format: 'date-time',
+        },
+        created_at: {
+            type: 'string',
+            isReadOnly: true,
+            format: 'date-time',
+        },
+        mime: {
+            type: 'string',
+            isRequired: true,
+            maxLength: 24,
+            minLength: 1,
+        },
+        file: {
+            type: 'string',
+            isReadOnly: true,
+            format: 'uri',
+        },
+    },
+} as const;"
+`;
+
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/schemas/$ModelCircle.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export const $ModelCircle = {
+    description: \`Circle\`,
+    properties: {
+        kind: {
+            type: 'string',
+            isRequired: true,
+        },
+        radius: {
+            type: 'number',
+        },
+    },
+} as const;"
+`;
+
+exports[`v3 should generate with exportClient: ./test/generated/v3_client/schemas/$ModelSquare.ts 1`] = `
+"/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export const $ModelSquare = {
+    description: \`Square\`,
+    properties: {
+        kind: {
+            type: 'string',
+            isRequired: true,
+        },
+        sideLength: {
+            type: 'number',
+        },
+    },
 } as const;"
 `;
 
