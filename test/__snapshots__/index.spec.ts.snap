@@ -2008,6 +2008,7 @@ exports[`v2 should generate: ./test/generated/v2/services/CollectionFormatServic
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class CollectionFormatService {
 
@@ -2050,6 +2051,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ComplexService {
 
@@ -2094,6 +2096,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class DefaultsService {
 
@@ -2204,6 +2207,7 @@ exports[`v2 should generate: ./test/generated/v2/services/DuplicateService.ts 1`
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class DuplicateService {
 
@@ -2257,6 +2261,7 @@ exports[`v2 should generate: ./test/generated/v2/services/ErrorService.ts 1`] = 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ErrorService {
 
@@ -2293,6 +2298,7 @@ exports[`v2 should generate: ./test/generated/v2/services/HeaderService.ts 1`] =
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class HeaderService {
 
@@ -2322,6 +2328,7 @@ exports[`v2 should generate: ./test/generated/v2/services/MultipleTags1Service.t
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class MultipleTags1Service {
 
@@ -2357,6 +2364,7 @@ exports[`v2 should generate: ./test/generated/v2/services/MultipleTags2Service.t
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class MultipleTags2Service {
 
@@ -2392,6 +2400,7 @@ exports[`v2 should generate: ./test/generated/v2/services/MultipleTags3Service.t
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class MultipleTags3Service {
 
@@ -2416,6 +2425,7 @@ exports[`v2 should generate: ./test/generated/v2/services/NoContentService.ts 1`
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class NoContentService {
 
@@ -2440,6 +2450,7 @@ exports[`v2 should generate: ./test/generated/v2/services/ParametersService.ts 1
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ParametersService {
 
@@ -2525,6 +2536,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ResponseService {
 
@@ -2588,6 +2600,7 @@ exports[`v2 should generate: ./test/generated/v2/services/SimpleService.ts 1`] =
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class SimpleService {
 
@@ -2671,6 +2684,7 @@ exports[`v2 should generate: ./test/generated/v2/services/TypesService.ts 1`] = 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class TypesService {
 
@@ -5302,6 +5316,7 @@ exports[`v3 should generate: ./test/generated/v3/services/CollectionFormatServic
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class CollectionFormatService {
 
@@ -5347,6 +5362,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ComplexService {
 
@@ -5388,7 +5404,7 @@ export class ComplexService {
      */
     public static complexParams(
         id: number,
-        requestBody?: {
+        requestBody?: Writeable<{
             readonly key: string | null;
             name: string | null;
             enabled?: boolean;
@@ -5400,7 +5416,7 @@ export class ComplexService {
                 readonly id?: number;
                 readonly name?: string | null;
             };
-        },
+        }>,
     ): CancelablePromise<ModelWithString> {
         return __request({
             method: 'PUT',
@@ -5421,6 +5437,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class DefaultsService {
 
@@ -5531,6 +5548,7 @@ exports[`v3 should generate: ./test/generated/v3/services/DuplicateService.ts 1`
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class DuplicateService {
 
@@ -5584,6 +5602,7 @@ exports[`v3 should generate: ./test/generated/v3/services/ErrorService.ts 1`] = 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ErrorService {
 
@@ -5621,6 +5640,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class FormDataService {
 
@@ -5654,6 +5674,7 @@ exports[`v3 should generate: ./test/generated/v3/services/HeaderService.ts 1`] =
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class HeaderService {
 
@@ -5684,6 +5705,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class MultipartService {
 
@@ -5732,6 +5754,7 @@ exports[`v3 should generate: ./test/generated/v3/services/MultipleTags1Service.t
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class MultipleTags1Service {
 
@@ -5767,6 +5790,7 @@ exports[`v3 should generate: ./test/generated/v3/services/MultipleTags2Service.t
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class MultipleTags2Service {
 
@@ -5802,6 +5826,7 @@ exports[`v3 should generate: ./test/generated/v3/services/MultipleTags3Service.t
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class MultipleTags3Service {
 
@@ -5826,6 +5851,7 @@ exports[`v3 should generate: ./test/generated/v3/services/NoContentService.ts 1`
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class NoContentService {
 
@@ -5851,6 +5877,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ParametersService {
 
@@ -5869,7 +5896,7 @@ export class ParametersService {
         parameterForm: string | null,
         parameterCookie: string | null,
         parameterPath: string | null,
-        requestBody: ModelWithString | null,
+        requestBody: Writeable<ModelWithString | null>,
     ): CancelablePromise<void> {
         return __request({
             method: 'POST',
@@ -5908,7 +5935,7 @@ export class ParametersService {
         parameterQuery: string | null,
         parameterForm: string | null,
         parameterCookie: string | null,
-        requestBody: ModelWithString | null,
+        requestBody: Writeable<ModelWithString | null>,
         parameterPath1?: string,
         parameterPath2?: string,
         parameterPath3?: string,
@@ -5941,7 +5968,7 @@ export class ParametersService {
      * @throws ApiError
      */
     public static getCallWithOptionalParam(
-        requestBody: ModelWithString,
+        requestBody: Writeable<ModelWithString>,
         parameter?: string,
     ): CancelablePromise<void> {
         return __request({
@@ -5962,7 +5989,7 @@ export class ParametersService {
      */
     public static postCallWithOptionalParam(
         parameter: string,
-        requestBody?: ModelWithString,
+        requestBody?: Writeable<ModelWithString>,
     ): CancelablePromise<void> {
         return __request({
             method: 'POST',
@@ -5986,6 +6013,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class RequestBodyService {
 
@@ -5996,7 +6024,7 @@ export class RequestBodyService {
      */
     public static postRequestBody(
         parameter?: string,
-        requestBody?: ModelWithString,
+        requestBody?: Writeable<ModelWithString>,
     ): CancelablePromise<void> {
         return __request({
             method: 'POST',
@@ -6022,6 +6050,7 @@ import type { ModelWithString } from '../models/ModelWithString';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class ResponseService {
 
@@ -6085,6 +6114,7 @@ exports[`v3 should generate: ./test/generated/v3/services/SimpleService.ts 1`] =
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class SimpleService {
 
@@ -6168,6 +6198,7 @@ exports[`v3 should generate: ./test/generated/v3/services/TypesService.ts 1`] = 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class TypesService {
 
@@ -6221,6 +6252,7 @@ exports[`v3 should generate: ./test/generated/v3/services/UploadService.ts 1`] =
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 import { OpenAPI } from '../core/OpenAPI';
+type Writeable<T> = { -readonly [P in keyof T]-?: T[P] };
 
 export class UploadService {
 
