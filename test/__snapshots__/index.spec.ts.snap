@@ -230,6 +230,7 @@ function isStringWithValue(value: any): value is string {
     return isString(value) && value !== '';
 }
 
+// @ts-ignore
 function isBlob(value: any): value is Blob {
     return (
         typeof value === 'object' &&
@@ -249,6 +250,7 @@ function isFormData(value: any): value is FormData {
 
 function base64(str: string): string {
     try {
+        // @ts-ignore
         return btoa(str);
     } catch (err) {
         // @ts-ignore
@@ -2961,6 +2963,7 @@ function isStringWithValue(value: any): value is string {
     return isString(value) && value !== '';
 }
 
+// @ts-ignore
 function isBlob(value: any): value is Blob {
     return (
         typeof value === 'object' &&
@@ -2980,6 +2983,7 @@ function isFormData(value: any): value is FormData {
 
 function base64(str: string): string {
     try {
+        // @ts-ignore
         return btoa(str);
     } catch (err) {
         // @ts-ignore
