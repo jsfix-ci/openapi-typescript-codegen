@@ -1,5 +1,6 @@
 function base64(str: string): string {
     try {
+        // @ts-ignore
         return btoa(str);
     } catch (err) {
         // @ts-ignore
