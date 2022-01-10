@@ -8,7 +8,11 @@
         "type": "git",
         "url": "git+https://github.com/Ciptex/openapi-typescript-codegen.git"
     },
-    "private": true,
+    "publishConfig": {
+        "access": "public",
+        "cache": "~/.npm",
+        "registry": "https://registry.npmjs.org"
+    },
     "bugs": {
         "url": "https://github.com/Ciptex/openapi-typescript-codegen/issues"
     },
