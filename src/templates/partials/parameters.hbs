@@ -9,13 +9,13 @@
 {{#if description}}
 /** {{{description}}} **/
 {{/if}}
-{{{name}}}{{>isRequired}}: {{>type}},
+{{{name}}}{{>isRequired}}: {{#equals name 'requestBody'}}Writeable<{{>type}}>{{else}}{{>type}}{{/equals}},
 {{/each}}
 }
 {{~else}}
 
 {{#each parameters}}
-{{{name}}}{{>isRequired}}: {{>type}}{{#if default}} = {{{default}}}{{/if}},
+{{{name}}}{{>isRequired}}: {{#equals name 'requestBody'}}Writeable<{{>type}}>{{else}}{{>type}}{{/equals}}{{#if default}} = {{{default}}}{{/if}},
 {{/each}}
 {{/if}}
 {{/if}}
