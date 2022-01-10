@@ -19,8 +19,23 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 16
+        
+      # Restore NPM Cache
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-        
     - run: npm ci
     - run: npm run prepublishOnly
+    - run: npm run test:update
     - run: npm run test
     
     - name: "Automated Version Bump"
