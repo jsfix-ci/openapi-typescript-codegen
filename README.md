@@ -514,10 +514,10 @@ in your `tsconfig.json` file.
 
 
 [npm-url]: https://www.npmjs.com/package/@ciptex/openapi-typescript-codegen
-[npm-image]: https://img.shields.io/npm/v/openapi-typescript-codegen.svg
+[npm-image]: https://img.shields.io/npm/v/@ciptex/openapi-typescript-codegen.svg
 [license-url]: LICENSE
-[license-image]: http://img.shields.io/npm/l/openapi-typescript-codegen.svg
-[downloads-url]: http://npm-stat.com/charts.html?package=@ciptex/openapi-typescript-codegen
-[downloads-image]: http://img.shields.io/npm/dm/openapi-typescript-codegen.svg
+[license-image]: https://img.shields.io/npm/l/@ciptex/openapi-typescript-codegen.svg
+[downloads-url]: https://npm-stat.com/charts.html?package=@ciptex/openapi-typescript-codegen
+[downloads-image]: https://img.shields.io/npm/dm/@ciptex/openapi-typescript-codegen.svg
 [build-url]: https://github.com/Ciptex/openapi-typescript-codegen/actions/workflows/push.yml
 [build-image]: https://github.com/Ciptex/openapi-typescript-codegen/actions/workflows/push.yml/badge.svg
