@@ -1,12 +1,12 @@
 # OpenAPI Typescript Codegen
 
-<!-- [![NPM][npm-image]][npm-url] -->
+[![NPM][npm-image]][npm-url]
 [![License][license-image]][license-url]
-<!-- [![Coverage][coverage-image]][coverage-url]
-[![Quality][quality-image]][quality-url]
-[![Code Climate][climate-image]][climate-url]
+<!-- [![Coverage][coverage-image]][coverage-url] -->
+<!-- [![Quality][quality-image]][quality-url] -->
+<!-- [![Code Climate][climate-image]][climate-url] -->
 [![Downloads][downloads-image]][downloads-url]
-[![Build][build-image]][build-url] -->
+[![Build][build-image]][build-url] 
 
 > Node.js library that generates Typescript clients based on the OpenAPI specification.
 
@@ -25,7 +25,7 @@
 ## Install
 
 ```
-npm install openapi-typescript-codegen --save-dev
+npm install @ciptex/openapi-typescript-codegen --save-dev
 ```
 
 
@@ -513,17 +513,11 @@ In order to compile the project and resolve the imports, you will need to enable
 in your `tsconfig.json` file.
 
 
-[npm-url]: https://npmjs.org/package/openapi-typescript-codegen
+[npm-url]: https://www.npmjs.com/package/@ciptex/openapi-typescript-codegen
 [npm-image]: https://img.shields.io/npm/v/openapi-typescript-codegen.svg
 [license-url]: LICENSE
 [license-image]: http://img.shields.io/npm/l/openapi-typescript-codegen.svg
-[coverage-url]: https://codecov.io/gh/ferdikoomen/openapi-typescript-codegen
-[coverage-image]: https://img.shields.io/codecov/c/github/ferdikoomen/openapi-typescript-codegen.svg
-[quality-url]: https://lgtm.com/projects/g/ferdikoomen/openapi-typescript-codegen
-[quality-image]: https://img.shields.io/lgtm/grade/javascript/g/ferdikoomen/openapi-typescript-codegen.svg
-[climate-url]: https://codeclimate.com/github/ferdikoomen/openapi-typescript-codegen
-[climate-image]: https://img.shields.io/codeclimate/maintainability/ferdikoomen/openapi-typescript-codegen.svg
-[downloads-url]: http://npm-stat.com/charts.html?package=openapi-typescript-codegen
+[downloads-url]: http://npm-stat.com/charts.html?package=@ciptex/openapi-typescript-codegen
 [downloads-image]: http://img.shields.io/npm/dm/openapi-typescript-codegen.svg
-[build-url]: https://circleci.com/gh/ferdikoomen/openapi-typescript-codegen/tree/master
-[build-image]: https://circleci.com/gh/ferdikoomen/openapi-typescript-codegen/tree/master.svg?style=svg
+[build-url]: https://github.com/Ciptex/openapi-typescript-codegen/actions/workflows/push.yml
+[build-image]: https://github.com/Ciptex/openapi-typescript-codegen/actions/workflows/push.yml/badge.svg
