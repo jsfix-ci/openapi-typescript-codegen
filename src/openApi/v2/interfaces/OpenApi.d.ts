@@ -1,4 +1,5 @@
 import type { Dictionary } from '../../../utils/types';
+import { WithXTagGroupsExtension } from './Extensions/WithXTagGroupsExtension';
 import type { OpenApiExternalDocs } from './OpenApiExternalDocs';
 import type { OpenApiInfo } from './OpenApiInfo';
 import type { OpenApiParameter } from './OpenApiParameter';
@@ -12,7 +13,7 @@ import type { OpenApiTag } from './OpenApiTag';
 /**
  * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
  */
-export interface OpenApi {
+export interface OpenApi extends WithXTagGroupsExtension {
     swagger: string;
     info: OpenApiInfo;
     host?: string;

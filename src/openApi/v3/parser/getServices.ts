@@ -9,6 +9,8 @@ import { getOperationParameters } from './getOperationParameters';
  */
 export function getServices(openApi: OpenApi): Service[] {
     const services = new Map<string, Service>();
+    const tagGroups: string[] | undefined = openApi['x-tagGroups'] && openApi['x-tagGroups'][0]?.tags;
+
     for (const url in openApi.paths) {
         if (openApi.paths.hasOwnProperty(url)) {
             // Grab path and parse any global path parameters
@@ -28,7 +30,14 @@ export function getServices(openApi: OpenApi): Service[] {
                         case 'patch':
                             // Each method contains an OpenAPI operation, we parse the operation
                             const op = path[method]!;
-                            const tags = op.tags?.filter(unique) || ['Service'];
+
+                            let tags = op.tags?.filter(unique) || ['Service'];
+
+                            //Remove Tags that are not in the x-tagGroups Extension
+                            if (tagGroups) {
+                                tags = tags.filter(tag => tagGroups.includes(tag));
+                            }
+
                             tags.forEach(tag => {
                                 const operation = getOperation(openApi, url, method, tag, op, pathParams);
 
