@@ -8,9 +8,10 @@ async function sendRequest(
     openApiConfig: OpenAPIConfig
 ): Promise<AxiosResponse<any>> {
     const source = axios.CancelToken.source();
+    const newUrl = openApiConfig.EDGE ? url.replace("{edge}", openApiConfig.EDGE) : url;
 
     const config: AxiosRequestConfig = {
-        url: url.replace("{edge}", openApiConfig.EDGE),
+        url: newUrl,
         headers,
         data: body || formData,
         method: options.method,
