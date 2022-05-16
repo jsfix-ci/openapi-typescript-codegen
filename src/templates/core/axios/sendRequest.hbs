@@ -10,7 +10,7 @@ async function sendRequest(
     const source = axios.CancelToken.source();
 
     const config: AxiosRequestConfig = {
-        url,
+        url: url.replace("{edge}", openApiConfig.EDGE),
         headers,
         data: body || formData,
         method: options.method,
