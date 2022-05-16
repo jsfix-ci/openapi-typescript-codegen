@@ -15,11 +15,6 @@ const config: Config.InitialOptions = {
             displayName: 'E2E',
             testEnvironment: 'node',
             testMatch: [
-                '<rootDir>/test/e2e/v2.fetch.spec.ts',
-                '<rootDir>/test/e2e/v2.xhr.spec.ts',
-                '<rootDir>/test/e2e/v2.node.spec.ts',
-                '<rootDir>/test/e2e/v2.axios.spec.ts',
-                '<rootDir>/test/e2e/v2.babel.spec.ts',
                 '<rootDir>/test/e2e/v3.fetch.spec.ts',
                 '<rootDir>/test/e2e/v3.xhr.spec.ts',
                 '<rootDir>/test/e2e/v3.node.spec.ts',

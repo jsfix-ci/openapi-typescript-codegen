@@ -11,6 +11,7 @@ describe('writeClientIndex', () => {
         const client: Client = {
             server: 'http://localhost:8080',
             version: '1.0',
+            edgeRegions: [],
             models: [],
             services: [],
         };

@@ -16,10 +16,6 @@ async function sendRequest(
         signal: controller.signal,
     };
 
-    if (config.WITH_CREDENTIALS) {
-        request.credentials = config.CREDENTIALS;
-    }
-
     onCancel(() => controller.abort());
 
     return await fetch(url, request);

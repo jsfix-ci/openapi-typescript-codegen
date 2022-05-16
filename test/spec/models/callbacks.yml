@@ -1,0 +1,98 @@
+components:
+  schemas:
+    DeletedEventPayload:
+      type: object
+      readOnly: true
+      required:
+        - accountSid
+        - deleted
+      properties:
+        accountSid:
+          $ref: "models.yml#/components/schemas/AccountSid"
+        bookingId:
+          $ref: "models.yml#/components/schemas/BookingId"
+        conferenceId:
+          $ref: "models.yml#/components/schemas/ConferenceId"
+        participantId:
+          $ref: "models.yml#/components/schemas/ParticipantId"
+        hostId:
+          $ref: "models.yml#/components/schemas/HostId"
+        skillSetId:
+          $ref: "models.yml#/components/schemas/SkillSetId"
+        deleted:
+          type: boolean
+          readOnly: true
+          example: true
+      additionalProperties: false
+
+    StatusCallbackPayload:
+      type: object
+      readOnly: true
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        datacontenttype:
+          $ref: "models.yml#/components/schemas/EventContentType"
+        type:
+          $ref: "models.yml#/components/schemas/EventType"
+        specversion:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            eventDate:
+              type: string
+            eventData:
+              $ref: "#/components/schemas/StatusCallbackPayloadEventData"
+          additionalProperties: false
+      additionalProperties: false
+
+    ReportCallbackPayload:
+      type: object
+      readOnly: true
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        datacontenttype:
+          $ref: "models.yml#/components/schemas/EventContentType"
+        type:
+          type: string
+          enum:
+            - com.ciptex.booking.completed
+        specversion:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            eventDate:
+              type: string
+            eventData:
+              $ref: "#/components/schemas/StatusCallbackPayloadEventData"
+          additionalProperties: false
+      additionalProperties: false
+
+    CompletedReport:
+      type: object
+      readOnly: true
+      properties:
+        accountSid:
+          $ref: "models.yml#/components/schemas/AccountSid"
+        bookingId:
+          $ref: "models.yml#/components/schemas/BookingId"
+      additionalProperties: false
+
+    StatusCallbackPayloadEventData:
+      anyOf:
+        - $ref: "bookings.yml#/components/schemas/Booking"
+        - $ref: "conferences.yml#/components/schemas/Conference"
+        - $ref: "participants.yml#/components/schemas/Participant"
+        - $ref: "#/components/schemas/DeletedEventPayload"
+        - $ref: "#/components/schemas/CompletedReport"

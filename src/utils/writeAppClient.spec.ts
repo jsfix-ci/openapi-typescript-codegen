@@ -11,6 +11,7 @@ describe('writeAppClient', () => {
         const client: Client = {
             server: 'http://localhost:8080',
             version: 'v1',
+            edgeRegions: [],
             models: [],
             services: [],
         };

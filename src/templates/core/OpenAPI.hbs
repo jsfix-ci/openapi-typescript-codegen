@@ -8,8 +8,7 @@ type Headers = Record<string, string>;
 export type OpenAPIConfig = {
     BASE?: string;
     VERSION?: string;
-    WITH_CREDENTIALS?: boolean;
-    CREDENTIALS?: 'include' | 'omit' | 'same-origin';
+    EDGE?: string;
     TOKEN?: string | Resolver<string>;
     USERNAME?: string | Resolver<string>;
     PASSWORD?: string | Resolver<string>;
@@ -21,8 +20,7 @@ export type OpenAPIConfig = {
 export const OpenAPI: OpenAPIConfig = {
     BASE: '{{{server}}}',
     VERSION: '{{{version}}}',
-    WITH_CREDENTIALS: false,
-    CREDENTIALS: 'include',
+    EDGE: '{{#if server.edgeRegions}}{{server.edgeRegions.[0]}}{{else}}gll{{/if}}',
     TOKEN: undefined,
     USERNAME: undefined,
     PASSWORD: undefined,

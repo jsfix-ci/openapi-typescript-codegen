@@ -14,7 +14,6 @@ async function sendRequest(
         headers,
         data: body || formData,
         method: options.method,
-        withCredentials: openApiConfig.WITH_CREDENTIALS,
         cancelToken: source.token,
         validateStatus: () => true,
     };

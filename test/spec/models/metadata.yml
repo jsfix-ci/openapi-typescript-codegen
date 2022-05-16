@@ -1,0 +1,64 @@
+components:
+  schemas:
+    ListMetaData:
+      type: object
+      required:
+        - pageSize
+      readOnly: true
+      properties:
+        lastKey:
+          type: string
+        pageSize:
+          type: number
+      additionalProperties: false
+
+    MetaDataLinks:
+      type: object
+      required:
+        - meta
+        - links
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaData"
+        links:
+          $ref: "#/components/schemas/Links"
+      additionalProperties: false
+      
+    MetaData:
+      type: object
+      readOnly: true
+      properties:
+        dateCreated:
+          type: string
+          format: date-time
+          description: The ISO 8601 date and time in GMT when the resource was created
+        dateUpdated:
+          type: string
+          format: date-time
+          description: The ISO 8601 date and time in GMT when the resource was last updated
+        dateExpires:
+          type: string
+          format: date-time
+          description: The ISO 8601 date and time in GMT when the resource expires
+        dialInNumbers:
+          type: array
+          items:
+            type: string
+            format: e164-number
+            description: Array of Assigned Dial-In Numbers
+        registrationUrl:
+          type: string
+          readOnly: true
+          format: uri
+          description: URL to participant registration for booking (Ciptex-generated)
+          example: https://example.com/register/BIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        directAccessUrl:
+          type: string
+          readOnly: true
+          format: uri
+          description: URL for speaker access (Ciptex-generated)
+          example: https://example.com/host/BIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/CIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    Links:
+      type: object
+      description: The URLs of related resources
+      readOnly: true

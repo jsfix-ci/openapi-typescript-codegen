@@ -16,7 +16,7 @@ describe('getServer', () => {
                     },
                 ],
             })
-        ).toEqual('https://localhost:8080/api');
+        ).toEqual({ url: 'https://localhost:8080/api', edgeRegions: [] });
     });
 
     it('should produce correct result with variables', () => {
@@ -30,8 +30,12 @@ describe('getServer', () => {
                 paths: {},
                 servers: [
                     {
-                        url: '{scheme}://localhost:{port}/api',
+                        url: '{scheme}://localhost.{edge}.com:{port}/api',
                         variables: {
+                            edge: {
+                                default: 'gll',
+                                enum: ['gll', 'london'],
+                            },
                             scheme: {
                                 default: 'https',
                             },
@@ -42,6 +46,6 @@ describe('getServer', () => {
                     },
                 ],
             })
-        ).toEqual('https://localhost:8080/api');
+        ).toEqual({ url: 'https://localhost.{edge}.com:8080/api', edgeRegions: ['gll', 'london'] });
     });
 });

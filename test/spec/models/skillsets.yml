@@ -1,0 +1,64 @@
+components:
+  schemas:
+    SkillSet:
+      allOf:
+        - $ref: "#/components/schemas/SkillSetHeader"
+        - $ref: "#/components/schemas/SkillSetDetail"
+        - $ref: "metadata.yml#/components/schemas/MetaDataLinks"
+
+    SkillSetItem:
+      allOf:
+        - $ref: "#/components/schemas/SkillSetHeader"
+        - $ref: "#/components/schemas/SkillSetDetail"
+        - type: object
+          properties:
+            meta:
+              $ref: "metadata.yml#/components/schemas/MetaData"
+          additionalProperties: false
+
+    ListSkillSet:
+      type: object
+      readOnly: true
+      required:
+        - skillsets
+        - meta
+      properties:
+        skillsets:
+          type: array
+          items:
+            $ref: "#/components/schemas/SkillSetItem"
+        meta:
+          $ref: "metadata.yml#/components/schemas/ListMetaData"
+      additionalProperties: false
+
+    SkillSetHeader:
+      type: object
+      readOnly: true
+      required:
+        - accountSid
+        - skillSetId
+      properties:
+        accountSid:
+          $ref: "models.yml#/components/schemas/AccountSid"
+        skillSetId:
+          $ref: "models.yml#/components/schemas/SkillSetId"
+      additionalProperties: false
+
+    SkillSetDetail:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        skills:
+          type: array
+          items:
+            type: object
+            required:
+              - key
+            properties:
+              key:
+                type: string
+            additionalProperties: false
+      additionalProperties: false

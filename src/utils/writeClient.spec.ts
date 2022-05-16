@@ -12,6 +12,7 @@ describe('writeClient', () => {
             server: 'http://localhost:8080',
             version: 'v1',
             models: [],
+            edgeRegions: [],
             services: [],
         };
 

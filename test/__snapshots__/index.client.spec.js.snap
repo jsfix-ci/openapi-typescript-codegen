@@ -18,7 +18,6 @@ export class TestClient extends Service {
         const request = new HttpRequest({
             BASE: openApiConfig?.BASE ?? 'http://localhost:3000/base',
             VERSION: openApiConfig?.VERSION ?? '1.0',
-            WITH_CREDENTIALS: openApiConfig?.WITH_CREDENTIALS ?? false,
             CREDENTIALS: openApiConfig?.CREDENTIALS ?? 'include',
             TOKEN: openApiConfig?.TOKEN,
             USERNAME: openApiConfig?.USERNAME,
@@ -397,10 +396,6 @@ async function sendRequest(
         signal: controller.signal,
     };
 
-    if (config.WITH_CREDENTIALS) {
-        request.credentials = config.CREDENTIALS;
-    }
-
     onCancel(() => controller.abort());
 
     return await fetch(url, request);
@@ -514,7 +509,6 @@ type Headers = Record<string, string>;
 export type OpenAPIConfig = {
     BASE?: string;
     VERSION?: string;
-    WITH_CREDENTIALS?: boolean;
     CREDENTIALS: 'include' | 'omit' | 'same-origin';
     TOKEN?: string | Resolver<string>;
     USERNAME?: string | Resolver<string>;
@@ -651,7 +645,6 @@ export class TestClient {
         this.request = new HttpRequest({
             BASE: openApiConfig?.BASE ?? 'http://localhost:3000/base',
             VERSION: openApiConfig?.VERSION ?? '1.0',
-            WITH_CREDENTIALS: openApiConfig?.WITH_CREDENTIALS ?? false,
             CREDENTIALS: openApiConfig?.CREDENTIALS ?? 'include',
             TOKEN: openApiConfig?.TOKEN,
             USERNAME: openApiConfig?.USERNAME,
@@ -1040,10 +1033,6 @@ async function sendRequest(
         method: options.method,
         signal: controller.signal,
     };
-
-    if (config.WITH_CREDENTIALS) {
-        request.credentials = config.CREDENTIALS;
-    }
 
     onCancel(() => controller.abort());
 

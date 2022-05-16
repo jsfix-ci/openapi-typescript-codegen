@@ -7,13 +7,15 @@ const generate = async (input, output) => {
     await OpenAPI.generate({
         input,
         output,
-        httpClient: OpenAPI.HttpClient.NODE,
+        httpClient: OpenAPI.HttpClient.AXIOS,
         useOptions: false,
         useUnionTypes: false,
         exportCore: true,
         exportSchemas: true,
         exportModels: true,
         exportServices: true,
+        exportClient: true,
+        clientName: 'NotifiedClient',
         // postfix: 'Api',
         // request: './test/custom/request.ts',
     });
@@ -55,7 +57,6 @@ const generateRealWorldSpecs = async () => {
 };
 
 const main = async () => {
-    //await generate('./test/spec/v2.json', './test/generated/v2/');
     //await generate('./test/spec/v3.json', './test/generated/v3/');
     await generate('./test/spec/api.yml', './test/generated/notified/');
     // await generateRealWorldSpecs();

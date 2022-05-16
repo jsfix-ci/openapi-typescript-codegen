@@ -14,9 +14,9 @@ import { getServiceVersion } from './parser/getServiceVersion';
  */
 export function parse(openApi: OpenApi): Client {
     const version: string = getServiceVersion(openApi.info.version);
-    const server: string = getServer(openApi);
+    const server: { url: string; edgeRegions: string[] } = getServer(openApi);
     const models: Model[] = getModels(openApi);
     const services: Service[] = getServices(openApi);
 
-    return { version, server, models, services };
+    return { version, server: server.url, edgeRegions: server.edgeRegions, models, services };
 }

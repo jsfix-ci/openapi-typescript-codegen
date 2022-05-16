@@ -1,0 +1,172 @@
+components:
+  schemas:
+    AccountSid:
+      type: string
+      description: The SID of the Account that created the resource
+      maxLength: 34
+      minLength: 34
+      pattern: ^AC[0-9a-fA-F]{32}$
+      readOnly: true
+      example: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ResetId:
+      type: string
+      description: The RID of the Reset Attempt
+      maxLength: 34
+      minLength: 34
+      pattern: ^RI[0-9a-fA-F]{32}$
+      readOnly: true
+      example: RIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    BookingId:
+      type: string
+      description: The BID of the Booking
+      maxLength: 34
+      minLength: 34
+      pattern: ^BI[0-9a-fA-F]{32}$
+      readOnly: true
+      example: BIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ConferenceId:
+      type: string
+      description: The CID of the Conference
+      maxLength: 34
+      minLength: 34
+      pattern: ^CI[0-9a-fA-F]{32}$
+      readOnly: true
+      example: CIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ParticipantId:
+      type: string
+      description: The PID of the Booking
+      maxLength: 34
+      minLength: 34
+      pattern: ^PI[0-9a-fA-F]{32}$
+      readOnly: true
+      example: PIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ScheduleId:
+      type: string
+      description: The SID of the Schedule
+      maxLength: 34
+      minLength: 34
+      pattern: ^SI[0-9a-fA-F]{32}$
+      readOnly: true
+      example: SIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    SkillSetId:
+      type: string
+      description: The SID of the Skill Set
+      maxLength: 34
+      minLength: 34
+      pattern: ^SS[0-9a-fA-F]{32}$
+      readOnly: true
+      example: SSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    HostId:
+      type: string
+      description: The HID of the Host
+      maxLength: 34
+      minLength: 34
+      pattern: ^HI[0-9a-fA-F]{32}$
+      readOnly: true
+      example: HIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    Role:
+      type: string
+      description: User Role
+      enum:
+        - notified_admin
+        - notified_host
+        - notified_speaker
+        - notified_viewer
+      default: notified_viewer
+    MediaRegion:
+      type: string
+      description: Media Region to use for the conference https://www.twilio.com/docs/video/tutorials/video-regions-and-global-low-latency
+      enum:
+        - gll
+        - au1
+        - br1
+        - de1
+        - ie1
+        - in1
+        - jp1
+        - sg1
+        - us1
+        - us2
+      default: gll
+    BookingStatus:
+      type: string
+      description: Booking Status
+      enum:
+        - pending
+        - accepted
+        - assigned
+        - inactive
+        - canceled
+        - completed
+      default: pending
+    EventContentType:
+      type: string
+      enum:
+        - application/json
+    EventType:
+      type: string
+      enum:
+        - com.ciptex.notified.booking.created
+        - com.ciptex.notified.booking.updated
+        - com.ciptex.notified.booking.canceled
+        - com.ciptex.notified.booking.deleted
+        - com.ciptex.notified.booking.completed
+        - com.ciptex.notified.conference.created
+        - com.ciptex.notified.conference.updated
+        - com.ciptex.notified.conference.deleted
+        - com.ciptex.notified.conference.started
+        - com.ciptex.notified.conference.ended
+        - com.ciptex.notified.participant.created
+        - com.ciptex.notified.participant.updated
+        - com.ciptex.notified.participant.deleted
+        - com.ciptex.notified.participant.connected
+        - com.ciptex.notified.participant.disconnected
+        - com.ciptex.notified.participant.activity.update
+    ConferenceType:
+      type: string
+      enum:
+        - testRoom
+        - mainRoom
+      description: Conference Type
+      default: mainRoom
+    Region:
+      type: string
+      enum:
+        - AMER
+        - EMEA
+        - APAC
+      description: Operating Region
+    DialInGroup:
+      type: string
+      enum:
+        - US
+        - RestOfWorld
+        - US-TollFree
+        - RestOfWorld-TollFree
+    RegistrationFieldType:
+      type: string
+      enum:
+        - text
+        - select
+        - checkbox
+      description: >
+        Registration Field Types:
+          * `text` - plain text
+          * `select` - Select box with at least one option. Options array would include key/value pair for each <option> value and display text.
+          * `checkbox` - Checkbox which will have a value of either true or false
+      default: text
+    RegistrationFieldInputValidation:
+      type: string
+      enum:
+        - uri
+        - phoneNumber
+        - email
+      description: >
+        Registration Field Input Validation:
+          * `uri` - universal resource identifier (fully qualified url)
+          * `phoneNumber` - phone number conforms to e.164 format: https://www.twilio.com/docs/glossary/what-e164
+          * `email` - input text must be in "email_handle@domain" format
+    AssetType:
+      type: string
+      enum:
+        - audio

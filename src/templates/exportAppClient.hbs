@@ -20,10 +20,9 @@ export class {{{clientName}}} {{#if service}}extends {{{service.name}}} {{/if}}{
 
     constructor(openApiConfig?: OpenAPIConfig, HttpRequest: new (config: OpenAPIConfig) => BaseHttpRequest = {{{httpClientRequest}}}) {
         {{#if service}}const request{{else}}this.request{{/if}} = new HttpRequest({
-            BASE: openApiConfig?.BASE ?? '{{{server}}}',
+            BASE: '{{{server}}}',
+            EDGE: openApiConfig?.EDGE ?? '{{#if server.edgeRegions}}{{server.edgeRegions.[0]}}{{else}}gll{{/if}}',
             VERSION: openApiConfig?.VERSION ?? '{{{version}}}',
-            WITH_CREDENTIALS: openApiConfig?.WITH_CREDENTIALS ?? false,
-            CREDENTIALS: openApiConfig?.CREDENTIALS ?? 'same-origin',
             TOKEN: openApiConfig?.TOKEN,
             USERNAME: openApiConfig?.USERNAME,
             PASSWORD: openApiConfig?.PASSWORD,

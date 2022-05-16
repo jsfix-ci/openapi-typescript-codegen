@@ -1,0 +1,73 @@
+components:
+  schemas:
+    Participant:
+      allOf:
+        - $ref: "#/components/schemas/ParticipantHeader"
+        - $ref: "#/components/schemas/ParticipantDetail"
+        - $ref: "metadata.yml#/components/schemas/MetaDataLinks"
+
+    ParticipantItem:
+      allOf:
+        - $ref: "#/components/schemas/ParticipantHeader"
+        - $ref: "#/components/schemas/ParticipantDetail"
+        - type: object
+          properties:
+            meta:
+              $ref: "metadata.yml#/components/schemas/MetaData"
+          additionalProperties: false
+
+    ListParticipant:
+      type: object
+      readOnly: true
+      required:
+        - participants
+        - meta
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParticipantItem"
+        meta:
+          $ref: "metadata.yml#/components/schemas/ListMetaData"
+      additionalProperties: false
+  
+    ParticipantHeader:
+      type: object
+      readOnly: true
+      required:
+        - accountSid
+        - bookingId
+        - participantId
+      properties:
+        accountSid:
+          $ref: "models.yml#/components/schemas/AccountSid"
+        bookingId:
+          $ref: "models.yml#/components/schemas/BookingId"
+        participantId:
+          $ref: "models.yml#/components/schemas/ParticipantId"
+      additionalProperties: false
+
+    ParticipantDetail:
+      type: object
+      description: Participant Details
+      required:
+        - registrationData
+      properties:
+        registrationData:
+          type: object
+          required:
+            - email
+          properties:
+            email:
+              type: string
+              format: email
+              example: email@email.com
+          additionalProperties: true
+        pin:
+          type: string
+          minLength: 6
+          maxLength: 8
+          description: Login Pin. This is only returned on the inital POST Request
+          example: 123456
+          readOnly: true
+      additionalProperties: false

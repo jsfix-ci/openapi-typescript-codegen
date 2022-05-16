@@ -1,0 +1,42 @@
+components:
+  schemas:
+    TelephonyPinVerify:
+      allOf:
+        - $ref: "#/components/schemas/TelephonyPinHeader"
+        - $ref: "#/components/schemas/TelephonyPinDetail"
+        - $ref: "metadata.yml#/components/schemas/MetaDataLinks"
+
+    TelephonyPinHeader:
+      type: object
+      required:
+        - accountSid
+        - role
+      properties:
+        accountSid:
+          $ref: "models.yml#/components/schemas/AccountSid"
+        role:
+          $ref: "models.yml#/components/schemas/Role"
+        participantId:
+          $ref: "models.yml#/components/schemas/ParticipantId"
+
+    TelephonyPinDetail:
+      type: object
+      description: body to generate Telephony Pin for Speaker/Host
+      required:
+        - bookingId
+        - conferenceId
+        - identity
+      properties:
+        bookingId:
+          $ref: "models.yml#/components/schemas/BookingId"
+        conferenceId:
+          $ref: "models.yml#/components/schemas/ConferenceId"
+        hostId:
+          $ref: "models.yml#/components/schemas/HostId"
+        notifiedId:
+          type: string
+          example: "AK1234"
+          description: "Notified Identifier. Must be Unique for each Participant"
+        identity:
+          type: string
+          example: "Matthew Duggan"

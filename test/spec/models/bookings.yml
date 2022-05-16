@@ -1,0 +1,283 @@
+components:
+  schemas:
+    Booking:
+      allOf:
+        - $ref: "#/components/schemas/BookingHeader"
+        - $ref: "#/components/schemas/BookingDetail"
+        - $ref: "metadata.yml#/components/schemas/MetaDataLinks"
+
+    BookingItem:
+      allOf:
+        - $ref: "#/components/schemas/BookingHeader"
+        - $ref: "#/components/schemas/BookingDetail"
+        - type: object
+          properties:
+            meta:
+              $ref: "metadata.yml#/components/schemas/MetaData"
+          additionalProperties: false
+
+    ListBooking:
+      type: object
+      readOnly: true
+      required:
+        - bookings
+        - meta
+      properties:
+        bookings:
+          type: array
+          items:
+            $ref: "#/components/schemas/BookingItem"
+        meta:
+          $ref: "metadata.yml#/components/schemas/ListMetaData"
+      additionalProperties: false
+
+    BookingHeader:
+      type: object
+      readOnly: true
+      required:
+        - accountSid
+        - bookingId
+      properties:
+        accountSid:
+          $ref: "models.yml#/components/schemas/AccountSid"
+        bookingId:
+          $ref: "models.yml#/components/schemas/BookingId"
+      additionalProperties: false
+
+    BookingDetail:
+      type: object
+      required:
+        - event
+        - callbacks
+        - status
+      properties:
+        event:
+          $ref: "#/components/schemas/Event"
+        account:
+          $ref: "#/components/schemas/Account"
+        status:
+          $ref: "models.yml#/components/schemas/BookingStatus"
+        branding:
+          $ref: "#/components/schemas/Branding"
+        assignedHosts:
+          description: Array of Assigned Host Identities
+          type: array
+          items:
+            $ref: "models.yml#/components/schemas/HostId"
+        dialInGroups:
+          type: array
+          description: Regions to have Dial-In Numbers configured for
+          items:
+            $ref: "models.yml#/components/schemas/DialInGroup"
+          default: []
+        options:
+          $ref: "#/components/schemas/Options"
+        leader:
+          $ref: "#/components/schemas/Contact"
+        organizer:
+          $ref: "#/components/schemas/Contact"
+        notes:
+          type: string
+          description: Free form notes for use by booking organizers
+        registrationFields:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegistrationField"
+        callbacks:
+          type: object
+          properties:
+            bookingCallbackUrl:
+              description: |
+                Callback used by Ciptex for passing updated booking data back to MMC Core. URL includes the Basic
+                Authentication credentials (see example).
+              type: string
+              format: uri
+              example: "https://user:password@edge.media-server.com/mmc/services/ciptex-telco/booking-callback"
+            reportingUrl:
+              description: |
+                Endpoint used by Ciptex for passing event data to MMC Core. This includes information about conference
+                call participants registering for a call, as well as reporting data about a finished conference call.
+                URL includes the Basic Authentication credentials (see example).
+              type: string
+              format: uri
+              example: "https://user:password@edge.media-server.com/mmc/services/ciptex-telco/reporting"
+      additionalProperties: false
+
+    Event:
+      type: object
+      description: representation of mmc event information
+      required:
+        - id
+        - name
+        - startDate
+        - duration
+      properties:
+        id:
+          type: integer
+          description: Event Service Token (unique across all MMC installs). For use in booking conflict resolution.
+        uid:
+          type: string
+          description: Display-friendly identifier for end-user UI
+        name:
+          type: string
+        usage:
+          type: string
+          description: Production, Demo, Test
+        startDate:
+          type: string
+          format: date-time
+          description: Start datetime of the event
+        duration:
+          type: integer
+          format: int32
+          description: in seconds
+        serviceLevel:
+          type: string
+          description: Full-service, self-service
+        isHighAlert:
+          type: boolean
+          description: If the event requires special attention
+          default: false
+        url:
+          type: string
+          format: uri
+          description: Link to the event
+      additionalProperties: false
+
+    Account:
+      type: object
+      description: representation of mmc account information
+      properties:
+        id:
+          type: integer
+          description: Account Service Token (unique across all MMC installs)
+        name:
+          type: string
+          description: MMC account Name
+        type:
+          type: string
+          description: Reseller, Managed, etc
+        region:
+          $ref: "models.yml#/components/schemas/Region"
+      additionalProperties: false
+
+    Branding:
+      type: object
+      properties:
+        mohUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+            example: http://com.twilio.music.guitars.s3.amazonaws.com/Pitx_-_Long_Winter.mp3
+            description: URLs of Sound Files to be played while users wait
+        virtualBackgroundUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+            example: https://example.com/virtualBackground.png
+            description: URLs of Virtual Backgrounds to be available for use
+        lobbyImgUrl:
+          type: string
+          format: uri
+          example: https://example.com/lobbyImgUrl.png
+          description: URL for Lobby Waiting Screen to be displayed on Interface
+        logoUrl:
+          type: string
+          format: uri
+          example: https://example.com/logo.jpg
+          description: URL for Logo to be displayed on Interface
+      additionalProperties: false
+
+    Options:
+      type: object
+      properties:
+        hasQaSession:
+          type: boolean
+          description: Q and A
+          default: false
+        hasVideo:
+          type: boolean
+          description: If the booking has a video component
+          default: false
+        language:
+          type: string
+          description: Available language (2 letter, ISO 639-1)
+          default: en
+      additionalProperties: false
+
+    Contact:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: |
+            *`PII MTL: 30 DAYS`*
+          example: John
+        lastName:
+          type: string
+          description: |
+              *`PII MTL: 30 DAYS`*
+          example: Doe
+        email:
+          type: string
+          description: |
+              *`PII MTL: 30 DAYS`*
+          example: email@email.com
+        phone:
+          type: string
+          description: |
+              *`PII MTL: 30 DAYS`*
+          example: +44161123456
+        company:
+          type: string
+          example: Notified
+      additionalProperties: false
+
+    RegistrationField:
+      type: object
+      required:
+        - name
+        - label
+      properties:
+        name:
+          type: string
+          description: Unique data name for the registration field (firstName, lastName, etc)
+        type:
+          $ref: "models.yml#/components/schemas/RegistrationFieldType"
+        label:
+          type: string
+          description: Human-readable field label for registration form
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegistrationFieldOption"
+          description: Array of Registration Field Dropdown Option objects to display in order of listing.
+        defaultValue:
+          type: string
+        isRequired:
+          type: boolean
+          description: Is an answer from the user required for this field?
+          default: false
+        inputValidation:
+          $ref: "models.yml#/components/schemas/RegistrationFieldInputValidation"
+        characterLimit:
+          type: integer
+          description: Maximum number of characters allowed for user input
+          default: 200
+      additionalProperties: false
+
+    RegistrationFieldOption:
+      type: object
+      required:
+        - value
+        - label
+      properties:
+        value:
+          type: string
+          description: Unique value for option tag
+        label:
+          type: string
+          description: Human-readable field text for dropdown option
+      additionalProperties: false

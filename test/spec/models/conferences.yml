@@ -1,0 +1,125 @@
+components:
+  schemas:
+    Conference:
+      allOf:
+        - $ref: "#/components/schemas/ConferenceHeader"
+        - $ref: "#/components/schemas/ConferenceDetail"
+        - $ref: "metadata.yml#/components/schemas/MetaDataLinks"
+
+    ConferenceItem:
+      allOf:
+        - $ref: "#/components/schemas/ConferenceHeader"
+        - $ref: "#/components/schemas/ConferenceDetail"
+        - type: object
+          properties:
+            meta:
+              $ref: "metadata.yml#/components/schemas/MetaData"
+          additionalProperties: false
+
+    ListConference:
+      type: object
+      readOnly: true
+      required:
+        - conferences
+        - meta
+      properties:
+        conferences:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConferenceItem"
+        meta:
+          $ref: "metadata.yml#/components/schemas/ListMetaData"
+      additionalProperties: false
+
+    ConferenceHeader:
+      type: object
+      readOnly: true
+      required:
+        - accountSid
+        - bookingId
+        - conferenceId
+        - status
+      properties:
+        accountSid:
+          $ref: "models.yml#/components/schemas/AccountSid"
+        bookingId:
+          $ref: "models.yml#/components/schemas/BookingId"
+        conferenceId:
+          $ref: "models.yml#/components/schemas/ConferenceId"
+        status:
+          $ref: "models.yml#/components/schemas/BookingStatus"
+        mohUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+            example: http://com.twilio.music.guitars.s3.amazonaws.com/Pitx_-_Long_Winter.mp3
+            description: URLs of Sound Files to be played while users wait
+      additionalProperties: false
+
+    ConferenceDetail:
+      type: object
+      required:
+        - conferenceName
+        - startDate
+        - endDate
+      properties:
+        conferenceName:
+          type: string
+          maxLength: 250
+          minLength: 1
+          pattern: ^.{1,250}$
+        startDate:
+          type: string
+          format: date-time
+          description: The ISO 8601 date and time in GMT when the conference will be happening
+        endDate:
+          type: string
+          format: date-time
+          description: The ISO 8601 date and time in GMT when the conference will be ending
+        conferenceType:
+          $ref: "models.yml#/components/schemas/ConferenceType"
+        assignedHosts:
+          description: Array of Assigned Host Identities
+          type: array
+          readOnly: true
+          items:
+            $ref: "models.yml#/components/schemas/HostId"
+        openingScript:
+          type: string
+          description: Opening message for conference operator
+        assets:
+          description: Array of Assets attached to the Conference
+          type: array
+          items:
+            $ref: "#/components/schemas/Asset"
+        expectedNumParticipants:
+          type: integer
+        mediaRegion:
+          $ref: "models.yml#/components/schemas/MediaRegion"
+        MMCWebcastURL:
+          type: string
+          format: uri
+        statusCallbackURL:
+          type: string
+          format: uri
+          description: Conference Events will be passed to this URL
+          example: https://user:password@example.com/app/services/ciptex-telco/conference-callback
+      additionalProperties: false
+
+    Asset:
+      type: object
+      description: Media Assset
+      required:
+        - type
+        - title
+        - url
+      properties:
+        type:
+          $ref: "models.yml#/components/schemas/AssetType"
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+      additionalProperties: false
