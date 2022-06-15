@@ -1,7 +1,7 @@
 {{>header}}
 
 import { BaseHttpRequest } from './core/BaseHttpRequest';
-import type { OpenAPIConfig } from './core/OpenAPI';
+import type { OpenAPIConfig, OpenAPIConfig2 } from './core/OpenAPI';
 import { {{{httpClientRequest}}} } from './core/{{{httpClientRequest}}}';
 {{#if services}}
 {{#each services}}
@@ -18,15 +18,14 @@ export class {{{clientName}}} {{#if service}}extends {{{service.name}}} {{/if}}{
 {{/each}}
     readonly request: BaseHttpRequest;
 
-    constructor(openApiConfig?: OpenAPIConfig, HttpRequest: new (config: OpenAPIConfig) => BaseHttpRequest = {{{httpClientRequest}}}) {
+    constructor(openApiConfig?: OpenAPIConfig, HttpRequest: new (config: OpenAPIConfig2) => BaseHttpRequest = {{{httpClientRequest}}}) {
         {{#if service}}const request{{else}}this.request{{/if}} = new HttpRequest({
             base: '{{{server}}}',
             edge: openApiConfig?.edge ?? '{{#if server.edgeRegions}}{{server.edgeRegions.[0]}}{{else}}gll{{/if}}',
             version: '{{{version}}}',
             token: openApiConfig?.token,
             accountSid: openApiConfig?.accountSid,
-            authToken: openApiConfig?.authToken,
-            headers: openApiConfig?.headers
+            authToken: openApiConfig?.authToken
         });
         {{#if service}}
         super(request);

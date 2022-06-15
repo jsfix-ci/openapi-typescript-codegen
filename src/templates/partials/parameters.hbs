@@ -1,17 +1,21 @@
 {{#if parameters}}
 {{#if @root.useOptions~}}
+{{#each parameters}}
+{{#equals name 'requestBody'}}{{{name}}}{{>isRequired}}: Writeable<{{>type}}>,{{/equals}}
+{{/each}}
 {
 {{#each parameters}}
-{{{name}}}{{#if default}} = {{{default}}}{{/if}},
+{{#notEquals name 'requestBody'}}{{{name}}}{{#if default}} = {{{default}}}{{/if}},{{/notEquals}}
 {{/each}}
 }: {
 {{#each parameters}}
 {{#if description}}
 /** {{{description}}} **/
 {{/if}}
-{{{name}}}{{>isRequired}}: {{#equals name 'requestBody'}}Writeable<{{>type}}>{{else}}{{>type}}{{/equals}},
+{{#notEquals name 'requestBody'}}{{{name}}}{{>isRequired}}: {{>type}},{{/notEquals}}
 {{/each}}
 }
+
 {{~else}}
 
 {{#each parameters}}
