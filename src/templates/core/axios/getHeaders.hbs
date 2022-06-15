@@ -1,4 +1,4 @@
-async function getHeaders(options: ApiRequestOptions, config: OpenAPIConfig, formData?: FormData): Promise<Record<string, string>> {
+async function getHeaders(options: ApiRequestOptions, config: OpenAPIConfig2, formData?: FormData): Promise<Record<string, string>> {
     const token = await resolve(options, config.token);
     const username = await resolve(options, config.accountSid);
     const password = await resolve(options, config.authToken);
