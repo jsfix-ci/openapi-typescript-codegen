@@ -1,0 +1,18 @@
+components:
+  schemas:
+    AccountSid:
+      type: string
+      description: The SID of the Account that created the resource
+      maxLength: 34
+      minLength: 34
+      pattern: ^AC[0-9a-fA-F]{32}$
+      readOnly: true
+      example: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ContentId:
+      type: string
+      description: The ID of the Content
+      maxLength: 34
+      minLength: 34
+      pattern: ^CT[0-9a-fA-F]{32}$
+      readOnly: true
+      example: CTXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

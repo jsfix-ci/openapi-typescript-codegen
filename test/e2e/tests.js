@@ -33,9 +33,9 @@ function executeBrowserTestsWithStaticClient(dir, version, client, useOptions, u
     it('uses credentials', async () => {
         const result = await browser.evaluate(async () => {
             const { OpenAPI, SimpleService } = window.api;
-            OpenAPI.TOKEN = undefined;
-            OpenAPI.USERNAME = 'username';
-            OpenAPI.PASSWORD = 'password';
+            OpenAPI.token = undefined;
+            OpenAPI.accountSid = 'username';
+            OpenAPI.authToken = 'password';
             return await SimpleService.getCallWithoutParametersAndResponse();
         });
         expect(result.headers.authorization).toBe('Basic dXNlcm5hbWU6cGFzc3dvcmQ=');
@@ -173,7 +173,7 @@ function executeBrowserTestsWithInstanceClient(dir, version, client, useOptions,
     it('uses credentials', async () => {
         const result = await browser.evaluate(async () => {
             const { AppClient } = window.api;
-            const client = new AppClient({ TOKEN: undefined, USERNAME: 'username', PASSWORD: 'password' });
+            const client = new AppClient({ token: undefined, accountSid: 'username', authToken: 'password' });
             return client.simple.getCallWithoutParametersAndResponse();
         });
         expect(result.headers.authorization).toBe('Basic dXNlcm5hbWU6cGFzc3dvcmQ=');
@@ -314,9 +314,9 @@ function executeNodeTestsWithStaticClient(dir, version, client) {
 
     it('uses credentials', async () => {
         const { OpenAPI, SimpleService } = requireClient();
-        OpenAPI.TOKEN = undefined;
-        OpenAPI.USERNAME = 'username';
-        OpenAPI.PASSWORD = 'password';
+        OpenAPI.token = undefined;
+        OpenAPI.accountSid = 'username';
+        OpenAPI.password = 'password';
         const result = await SimpleService.getCallWithoutParametersAndResponse();
         expect(result.headers.authorization).toBe('Basic dXNlcm5hbWU6cGFzc3dvcmQ=');
     });
@@ -442,7 +442,7 @@ function executeNodeTestsWithInstanceClient(dir, version, client) {
 
     it('uses credentials', async () => {
         const { AppClient } = requireClient();
-        const client = new AppClient({ TOKEN: undefined, USERNAME: 'username', PASSWORD: 'password' });
+        const client = new AppClient({ token: undefined, accountSid: 'username', authToken: 'password' });
         const result = await client.simple.getCallWithoutParametersAndResponse();
         expect(result.headers.authorization).toBe('Basic dXNlcm5hbWU6cGFzc3dvcmQ=');
     });

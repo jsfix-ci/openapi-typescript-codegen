@@ -1,29 +1,18 @@
 #---
-#title: Notified Conference Booking API
-#description: Notified Conference Booking API 
+#title: Ciptex Race Content API
+#description: API for Adding Content to Race
+#---
 openapi: "3.0.1"
 info:
-  title: "notified-booking-api"
+  title: "content-api"
   version: "1.0"
-  description: "The Notified Conference Booking API allows you to book and schedule Ciptex Conferences"
+  description: "The Ciptex Race Content API allows you to add Content for use from [Ciptex Race](https://ciptex.com/race), [Twilio Flex](https://www.twilio.com/flex) and [Twilio Studio](https://www.twilio.com/studio)"
   termsOfService: https://www.ciptex.com/legal/race-terms
-  contact:
+  contact: 
     name: API Support
     url: https://support.ciptex.com
-x-tagGroups:
-  - name: Conference API
-    tags:
-      - Booking
-      - Conference
-      - Participant
-      - Host
-      - HostAuth
-      - SkillSet
-x-maturity:
-  - description: This product is Beta.
-    name: Beta
 servers:
-  - url: https://notified-booking-api.{edge}.ciptex.io
+  - url: https://content-api.{edge}.ciptex.com
     description: Global Low Latency Endpoint
     variables:
       edge:
@@ -37,21 +26,22 @@ servers:
           - umatilla
     x-amazon-apigateway-endpoint-configuration:
       disableExecuteApiEndpoint: true
+x-tagGroups:
+  - name: Content API
+    tags:
+      - Content
+x-maturity:
+  - description: This product is Beta.
+    name: Beta
 paths:
-  /booking:
+  /content:
     get:
-      summary: "List Bookings"
-      description: "Retrieve a list of Bookings"
-      operationId: "ListBooking"
+      summary: "List Content"
+      description: "Retrieve a list of Content"
+      operationId: "ListContent"
       tags:
-        - Booking
+        - Content
       parameters:
-        - $ref: "#/components/parameters/StartDateFrom"
-        - $ref: "#/components/parameters/StartDateTo"
-        - $ref: "#/components/parameters/HostIdQuery"
-        - $ref: "#/components/parameters/StatusQuery"
-        - $ref: "#/components/parameters/RegionQuery"
-        - $ref: "#/components/parameters/SearchQuery"
         - $ref: "#/components/parameters/PageSize"
         - $ref: "#/components/parameters/LastKey"
       security:
@@ -60,11 +50,13 @@ paths:
         - Beta
       responses:
         200:
-          description: Ok
+          description: OK
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/ListBooking"    
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Content'
         400:
           $ref: "#/components/responses/400"
         401:
@@ -83,101 +75,31 @@ paths:
           Fn::Sub:
             - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
             - functionArn:
-                Fn::GetAtt: [listBookingFunction, Arn]
+                Fn::GetAtt: [listContentFunction, Arn]
         connectionType: "INTERNET"
     post:
-      summary: "Create New Booking"
-      description: "Create a new Booking"
-      operationId: "CreateBooking"
-      security:
-        - BasicAuthorizer: []
+      summary: "Create New Content"
+      description: "Create a new Content"
+      operationId: "CreateContent"
+      tags:
+        - Content
       x-maturity:
         - Beta
-      tags:
-        - Booking
+      security:
+        - BasicAuthorizer: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BookingDetail"
-            example:
-              event:
-                id: 101
-                uid: abcd1234
-                name: Quarterly Earnings Event
-                usage: PRODUCTION
-                startDate: "2021-11-17T20:25:33.650Z"
-                duration: 3600
-                serviceLevel: MANAGED
-                url: https://example.com/app/console/event/101
-              account:
-                id: 11
-                name: Acme Corp
-                type: MANAGED
-                region: AMER
-              dialInGroups:
-                - US
-              options:
-                hasQaSession: true
-                hasVideo: true
-                language: en
-              leader:
-                firstName: John
-                lastName: Doe
-                email: john.doe@acme.com
-                phone: "+16175555555"
-              organizer:
-                firstName: Jane
-                lastName: Kim
-                email: jane.kim@acme.com
-                phone: "+15085555555"
-              registrationFields:
-                - name: firstName
-                  type: text
-                  label: First Name
-                  isRequired: false
-                  characterLimit: 255
-                - name: lastName
-                  type: text
-                  label: Last Name
-                  isRequired: false
-                  characterLimit: 255
-              callbacks:
-                bookingCallbackUrl: https://user:password@example.com/app/services/ciptex-telco/booking-callback
-                reportingUrl: https://user:password@example.com/app/services/ciptex-telco/reporting
-      callbacks:
-        statusCallback:
-          "{$request.body#/bookingCallbackUrl}":
-            post:
-              requestBody:
-                description: Status Callback payload
-                content:
-                  application/json:
-                    schema:
-                      $ref: "#/components/schemas/StatusCallbackPayload"
-              responses:
-                200:
-                  description: callback successfully processed
-        reportCallback:
-          "{$request.body#/reportCallbackURL}":
-            post:
-              requestBody:
-                description: Report Callback payload
-                content:
-                  application/json:
-                    schema:
-                      $ref: "#/components/schemas/ReportCallbackPayload"
-              responses:
-                200:
-                  description: callback successfully processed
+              $ref: '#/components/schemas/ContentDetail'
       responses:
         201:
           description: Created
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/Booking"
+              schema: 
+                $ref: "#/components/schemas/Content"
         400:
           $ref: "#/components/responses/400"
         401:
@@ -196,28 +118,25 @@ paths:
           Fn::Sub:
             - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
             - functionArn:
-                Fn::GetAtt: [createBookingFunction, Arn]
+                Fn::GetAtt: [createContentFunction, Arn]
         connectionType: "INTERNET"
-  /booking/{BookingId}:
+  /content/{ContentId}:
     get:
-      summary: "Fetch Booking"
-      description: "Get a specific Booking"
-      operationId: "FetchBooking"
+      summary: Fetch Content
+      description: "Get a specific Content"
+      tags:
+        - Content
       security:
         - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Booking
       parameters:
-        - $ref: "#/components/parameters/BookingId"
+        - $ref: "#/components/parameters/ContentId"
       responses:
         200:
           description: OK
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/Booking"
+              schema: 
+                $ref: '#/components/schemas/Content'
         400:
           $ref: "#/components/responses/400"
         401:
@@ -236,33 +155,33 @@ paths:
           Fn::Sub:
             - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
             - functionArn:
-                Fn::GetAtt: [getBookingFunction, Arn]
+                Fn::GetAtt: [getContentFunction, Arn]
         connectionType: "INTERNET"
     patch:
-      summary: "Update Booking"
-      description: "Update Booking"
-      operationId: "UpdateBooking"
+      summary: "Update Content"
+      description: "Update Content"
+      operationId: "UpdateContent"
+      tags:
+        - Content
       security:
         - BasicAuthorizer: []
       x-maturity:
         - Beta
-      tags:
-        - Booking
       parameters:
-        - $ref: "#/components/parameters/BookingId"
+        - $ref: "#/components/parameters/ContentId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BookingDetail"
+              $ref: '#/components/schemas/ContentDetail'
       responses:
         200:
           description: OK
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/Booking"
+              schema: 
+                $ref: "#/components/schemas/Content"
         400:
           $ref: "#/components/responses/400"
         401:
@@ -281,20 +200,18 @@ paths:
           Fn::Sub:
             - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
             - functionArn:
-                Fn::GetAtt: [updateBookingFunction, Arn]
+                Fn::GetAtt: [updateContentFunction, Arn]
         connectionType: "INTERNET"
     delete:
-      summary: "Remove Booking"
-      description: "Remove Booking"
-      operationId: "RemoveBooking"
-      x-maturity:
-        - Beta
+      summary: "Remove Content"
+      description: "Remove Content"
+      operationId: "RemoveContent"
+      tags:
+        - Content
       security:
         - BasicAuthorizer: []
-      tags:
-        - Booking
       parameters:
-        - $ref: "#/components/parameters/BookingId"
+        - $ref: "#/components/parameters/ContentId"
       responses:
         204:
           description: No Content
@@ -316,1160 +233,7 @@ paths:
           Fn::Sub:
             - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
             - functionArn:
-                Fn::GetAtt: [deleteBookingFunction, Arn]
-        connectionType: "INTERNET"
-  /conference:
-    get:
-      summary: "List Conference's"
-      description: "Retrieve a list of Conference's"
-      operationId: "SearchConference"
-      parameters:
-        - $ref: "#/components/parameters/StartDateFrom"
-        - $ref: "#/components/parameters/StartDateTo"
-        - $ref: "#/components/parameters/HostIdQuery"
-        - $ref: "#/components/parameters/StatusQuery"
-        - $ref: "#/components/parameters/ConferenceTypeQuery"
-        - $ref: "#/components/parameters/PageSize"
-        - $ref: "#/components/parameters/LastKey"
-      tags:
-        - Conference
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      responses:
-        200:
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListConference"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [listConferenceFunction, Arn]
-        connectionType: "INTERNET"
-  /conference/{ConferenceId}:
-    get:
-      summary: "Fetch Conference"
-      description: "Fetch a specific Conference"
-      operationId: "FetchConferenceByCID"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Conference
-      parameters:
-        - $ref: "#/components/parameters/ConferenceId"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Conference"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [getConferenceFunction, Arn]
-        connectionType: "INTERNET"
-  /booking/{BookingId}/conference:
-    get:
-      summary: "List Conference's attached to a Booking"
-      description: "Retrieve a list of Conference's attached to a Booking"
-      operationId: "ListConference"
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/StartDateFrom"
-        - $ref: "#/components/parameters/StartDateTo"
-        - $ref: "#/components/parameters/HostIdQuery"
-        - $ref: "#/components/parameters/StatusQuery"
-        - $ref: "#/components/parameters/ConferenceTypeQuery"
-        - $ref: "#/components/parameters/PageSize"
-        - $ref: "#/components/parameters/LastKey"
-      tags:
-        - Conference
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      responses:
-        200:
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListConference"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [listConferenceFunction, Arn]
-        connectionType: "INTERNET"
-    post:
-      summary: "Create New Conference"
-      description: "Create a new Conference"
-      operationId: "CreateConference"
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Conference
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ConferenceDetail"
-            example:
-              conferenceName: "My Conference"
-              startDate: "2021-11-10T11:30:12.282Z"
-              endDate: "2021-11-10T15:30:12.282Z"
-              conferenceType: "testRoom"
-              mediaRegion: "gll"
-              statusCallbackURL: "https://username:password@example.com/conference-status-callback-url"
-      callbacks:
-        statusCallback:
-          "{$request.body#/statusCallbackURL}":
-            post:
-              requestBody:
-                description: Status Callback payload
-                content: 
-                  application/json:
-                    schema:
-                      $ref: "#/components/schemas/StatusCallbackPayload"
-              responses:
-                200:
-                  description: callback successfully processed 
-      responses:
-        201:
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Conference"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [createConferenceFunction, Arn]
-        connectionType: "INTERNET"
-  /booking/{BookingId}/conference/{ConferenceId}:
-    get:
-      summary: "Fetch Conference"
-      description: "Fetch a specific Conference"
-      operationId: "FetchConference"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Conference
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/ConferenceId"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Conference"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [getConferenceFunction, Arn]
-        connectionType: "INTERNET"
-    patch:
-      summary: "Update Conference"
-      description: "Update Conference"
-      operationId: "UpdateConference"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Conference
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/ConferenceId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ConferenceDetail"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Conference"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [updateConferenceFunction, Arn]
-        connectionType: "INTERNET"
-    delete:
-      summary: "Remove Conference"
-      description: "Remove Conference"
-      operationId: "RemoveConference"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Conference
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/ConferenceId"
-      responses:
-        204:
-          description: No Content
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [deleteConferenceFunction, Arn]
-        connectionType: "INTERNET"
-  /booking/{BookingId}/participant:
-    get:
-      summary: "Retrieve a list of Participant's attached to a Booking"
-      description: "Retrieve a list of Participant's attached to a Booking"
-      operationId: "ListParticipant"
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/PageSize"
-        - $ref: "#/components/parameters/LastKey"
-      tags:
-        - Participant
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      responses:
-        200:
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListParticipant"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [listParticipantFunction, Arn]
-        connectionType: "INTERNET"
-    post:
-      summary: "Create New Participant"
-      description: "Create a new Participant"
-      operationId: "CreateParticipant"
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Participant
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ParticipantDetail"
-            example:
-              registrationData:
-                firstName: John
-                lastName: Doe
-                email: email@email.com
-                investor: true
-      responses:
-        201:
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Participant"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [createParticipantFunction, Arn]
-        connectionType: "INTERNET"
-  /booking/{BookingId}/participant/{ParticipantId}:
-    get:
-      summary: "Fetch Participant"
-      description: "Fetch a specific Participant"
-      operationId: "FetchParticipantByBooking"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Participant
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/ParticipantId"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Participant"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [getParticipantFunction, Arn]
-        connectionType: "INTERNET"
-    patch:
-      summary: "Update Participant"
-      description: "Update Participant"
-      operationId: "UpdateParticipant"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Participant
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/ParticipantId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ParticipantDetail"
-            example:
-              registrationData:
-                firstName: John
-                lastName: Doe
-                email: email@email.com
-                investor: true
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Participant"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [updateParticipantFunction, Arn]
-        connectionType: "INTERNET"
-    delete:
-      summary: "Remove Participant"
-      description: "Remove Participant"
-      operationId: "RemoveParticipant"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Participant
-      parameters:
-        - $ref: "#/components/parameters/BookingId"
-        - $ref: "#/components/parameters/ParticipantId"
-      responses:
-        204:
-          description: No Content
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [deleteParticipantFunction, Arn]
-        connectionType: "INTERNET"
-  /verify/{AccountSid}:
-    post:
-      summary: "Verify Participants Pin"
-      description: "Verify if Participants Pin is valid and return Participants PID"
-      operationId: "VerifyParticipant"
-      x-maturity:
-        - Beta
-      tags:
-        - Participant
-      parameters:
-        - $ref: "#/components/parameters/AccountSid"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ParticipantVerifyInput"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ParticipantVerify"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [verifyParticipantFunction, Arn]
-        connectionType: "INTERNET"
-  /participant/{ParticipantId}:
-    get:
-      summary: "Fetch Participant"
-      description: "Fetch a specific Participant"
-      operationId: "FetchParticipant"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Participant
-      parameters:
-        - $ref: "#/components/parameters/ParticipantId"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Participant"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [getParticipantFunction, Arn]
-        connectionType: "INTERNET"
-  /host:
-    get:
-      summary: "Retrieve a list of Host's"
-      description: "Retrieve a list of Host's"
-      operationId: "ListHost"
-      parameters:
-        - $ref: "#/components/parameters/PageSize"
-        - $ref: "#/components/parameters/LastKey"
-      tags:
-        - Host
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      responses:
-        200:
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListHost"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [listHostFunction, Arn]
-        connectionType: "INTERNET"
-    post:
-      summary: "Create New Host"
-      description: "Create a new Host"
-      operationId: "CreateHost"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Host
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/HostDetail"
-      responses:
-        201:
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Host"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [createHostFunction, Arn]
-        connectionType: "INTERNET"
-  /host/{HostId}:
-    get:
-      summary: "Fetch Host"
-      description: "Fetch a specific Host"
-      operationId: "FetchHost"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Host
-      parameters:
-        - $ref: "#/components/parameters/HostId"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Host"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [getHostFunction, Arn]
-        connectionType: "INTERNET"
-    patch:
-      summary: "Update Host"
-      description: "Update Host"
-      operationId: "UpdateHost"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Host
-      parameters:
-        - $ref: "#/components/parameters/HostId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/HostDetail"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Host"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [updateHostFunction, Arn]
-        connectionType: "INTERNET"
-    delete:
-      summary: "Remove Host"
-      description: "Remove Host"
-      operationId: "RemoveHost"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - Host
-      parameters:
-        - $ref: "#/components/parameters/HostId"
-      responses:
-        204:
-          description: No Content
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [deleteHostFunction, Arn]
-        connectionType: "INTERNET"
-  /skillSet:
-    get:
-      summary: "Retrieve a list of Skill Sets"
-      description: "Retrieve a list of Skill Sets"
-      operationId: "ListSkillSet"
-      parameters:
-        - $ref: "#/components/parameters/PageSize"
-        - $ref: "#/components/parameters/LastKey"
-      tags:
-        - SkillSet
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      responses:
-        200:
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListSkillSet"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [listSkillSetFunction, Arn]
-        connectionType: "INTERNET"
-    post:
-      summary: "Create New Skill Set"
-      description: "Create a new Skill Set"
-      operationId: "CreateSkillSet"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - SkillSet
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SkillSetDetail"
-      responses:
-        201:
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SkillSet"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [createSkillSetFunction, Arn]
-        connectionType: "INTERNET"
-  /skillSet/{SkillSetId}:
-    get:
-      summary: "Fetch SkillSet"
-      description: "Fetch a specific SkillSet"
-      operationId: "FetchSkillSet"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - SkillSet
-      parameters:
-        - $ref: "#/components/parameters/SkillSetId"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/SkillSet"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [getSkillSetFunction, Arn]
-        connectionType: "INTERNET"
-    patch:
-      summary: "Update Skill Set"
-      description: "Update Skill Set"
-      operationId: "UpdateSkillSet"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - SkillSet
-      parameters:
-        - $ref: "#/components/parameters/SkillSetId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SkillSetDetail"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SkillSet"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [updateSkillSetFunction, Arn]
-        connectionType: "INTERNET"
-    delete:
-      summary: "Remove Skill Set"
-      description: "Remove Skill Set"
-      operationId: "RemoveSkillSet"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - SkillSet
-      parameters:
-        - $ref: "#/components/parameters/SkillSetId"
-      responses:
-        204:
-          description: No Content
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [deleteSkillSetFunction, Arn]
-        connectionType: "INTERNET"
-  /host/{HostId}/password/reset:
-    put:
-      summary: "Reset Host Password"
-      description: "Reset Host Password"
-      operationId: "ResetPassword"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - HostAuth
-      parameters:
-        - $ref: "#/components/parameters/HostId"
-      responses:
-        204:
-          description: No Content
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [resetHostPasswordFunction, Arn]
-        connectionType: "INTERNET"
-  /host/{HostId}/password/update:
-    put:
-      summary: "Update Host Password"
-      description: "Update Host Password"
-      operationId: "UpdatePassword"
-      x-maturity:
-        - Beta
-      tags:
-        - HostAuth
-      parameters:
-        - $ref: "#/components/parameters/HostId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SetPasswordDetail"
-      responses:
-        204:
-          description: No Content
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [updateHostPasswordFunction, Arn]
-        connectionType: "INTERNET"
-  /token/{AccountSid}:
-    post:
-      summary: "Generate Bearer Token"
-      description: "Generate Bearer Token"
-      operationId: "Authenticate"
-      x-maturity:
-        - Beta
-      tags:
-        - HostAuth
-      parameters:
-        - $ref: "#/components/parameters/AccountSid"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginDetail"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Token"
-        400:
-          $ref: "#/components/responses/400"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [authenticateHostFunction, Arn]
+                Fn::GetAtt: [deleteContentFunction, Arn]
         connectionType: "INTERNET"
   /.well-known/health-check:
     get:
@@ -1494,218 +258,8 @@ paths:
             - functionArn:
                 Fn::GetAtt: [healthCheckFunction, Arn]
         connectionType: "INTERNET"
-  /speaker/token:
-    post:
-      summary: "Mint Access Token for Speaker"
-      description: "Mint Access Token for Speaker"
-      operationId: "AuthenticateSpeaker"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - HostAuth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SpeakerTokenDetail"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SpeakerToken"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [speakerTokenFunction, Arn]
-        connectionType: "INTERNET"
-  /pin:
-    post:
-      summary: "Generate Dial-In Pin for Speaker or Host"
-      description: "Generate Dial-In Pin for Speaker or Hos"
-      operationId: "GenerateTelephonyPin"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - HostAuth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TelephonyPinDetail"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TelephonyPin"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [telephonyPinFunction, Arn]
-        connectionType: "INTERNET"
-  /pin/verify:
-    post:
-      summary: "Verify Dial-In Pin"
-      description: "Verify Dial-In Pin"
-      operationId: "VerifyTelephonyPin"
-      security:
-        - BasicAuthorizer: []
-      x-maturity:
-        - Beta
-      tags:
-        - HostAuth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ParticipantVerifyInput"
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TelephonyPinVerify"
-        400:
-          $ref: "#/components/responses/400"
-        401:
-          $ref: "#/components/responses/401"
-        404:
-          $ref: "#/components/responses/404"
-        405:
-          $ref: "#/components/responses/405"
-        500:
-          $ref: "#/components/responses/500"
-      x-amazon-apigateway-integration:
-        payloadFormatVersion: "2.0"
-        type: "aws_proxy"
-        httpMethod: "POST"
-        uri:
-          Fn::Sub:
-            - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}:live/invocations"
-            - functionArn:
-                Fn::GetAtt: [verifyTelephonyPinFunction, Arn]
-        connectionType: "INTERNET"
 components:
   parameters:
-    StartDateFrom:
-      in: query
-      name: startDateFrom
-      schema:
-        type: string
-        format: date-time
-      description: Start Date to search for
-      example: "2021-12-26T00:00:00.000Z"
-    StartDateTo:
-      in: query
-      name: startDateTo
-      schema:
-        type: string
-        format: date-time
-      description: Start Date to search for
-      example: "2022-02-06T00:00:00.000Z"
-    HostIdQuery:
-      in: query
-      name: hostId
-      schema:
-        type: string
-        pattern: ^HI[0-9a-fA-F]{32}$
-        maxLength: 34
-        minLength: 34
-      description: The PID of the Host
-      allowReserved: false
-      allowEmptyValue: false
-      example: HIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    ConferenceTypeQuery:
-      in: query
-      name: conferenceType
-      schema:
-        type: string
-        enum:
-          - testRoom
-          - mainRoom
-      description: Conference Type
-      allowReserved: false
-      allowEmptyValue: false
-      example: mainRoom
-    SearchQuery:
-      in: query
-      name: search
-      schema:
-        type: string
-      description: Search by MMC ID
-      allowReserved: false
-      allowEmptyValue: false
-      example: 4efr8hfe
-    StatusQuery:
-      in: query
-      name: status
-      schema:
-        type: string
-        enum:
-          - pending
-          - accepted
-          - assigned
-          - inactive
-          - canceled
-          - completed
-      description: Booking Status
-      allowReserved: false
-      allowEmptyValue: false
-      example: pending
-    RegionQuery:
-      in: query
-      name: region
-      schema:
-        type: string
-        enum:
-          - AMER
-          - EMEA
-          - APAC
-      description: Operating Region
-      allowReserved: false
-      allowEmptyValue: false
-      example: emea
     PageSize:
       in: query
       name: pageSize
@@ -1719,85 +273,20 @@ components:
       schema:
         type: string
       description: Last Key that was evaluated
-      example: BIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    AccountSid:
+      example: CTXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ContentId:
       in: path
-      name: AccountSid
+      name: ContentId
       schema:
         type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
+        pattern: ^CT[0-9a-fA-F]{32}$
         maxLength: 34
         minLength: 34
       required: true
-      description: The SID of the Account
+      description: The ID of the Content
       allowReserved: false
       allowEmptyValue: false
-      example: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    BookingId:
-      in: path
-      name: BookingId
-      schema:
-        type: string
-        pattern: ^BI[0-9a-fA-F]{32}$
-        maxLength: 34
-        minLength: 34
-      required: true
-      description: BID of the Booking
-      allowReserved: false
-      allowEmptyValue: false
-      example: BIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    ConferenceId:
-      in: path
-      name: ConferenceId
-      schema:
-        type: string
-        pattern: ^CI[0-9a-fA-F]{32}$
-        maxLength: 34
-        minLength: 34
-      required: true
-      description: CID of the Conference
-      allowReserved: false
-      allowEmptyValue: false
-      example: CIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    ParticipantId:
-      in: path
-      name: ParticipantId
-      schema:
-        type: string
-        pattern: ^PI[0-9a-fA-F]{32}$
-        maxLength: 34
-        minLength: 34
-      required: true
-      description: The PID of the Participant
-      allowReserved: false
-      allowEmptyValue: false
-      example: PIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    HostId:
-      in: path
-      name: HostId
-      schema:
-        type: string
-        pattern: ^HI[0-9a-fA-F]{32}$
-        maxLength: 34
-        minLength: 34
-      required: true
-      description: The PID of the Host
-      allowReserved: false
-      allowEmptyValue: false
-      example: HIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    SkillSetId:
-      in: path
-      name: SkillSetId
-      schema:
-        type: string
-        pattern: ^SS[0-9a-fA-F]{32}$
-        maxLength: 34
-        minLength: 34
-      required: true
-      description: The PID of the SkillSet
-      allowReserved: false
-      allowEmptyValue: false
-      example: SSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      example: CTXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   responses:
     400:
       description: Bad Request
@@ -1819,312 +308,108 @@ components:
       description: Internal Server Error
   schemas:
     AccountSid:
-      $ref: "models/models.yml#/components/schemas/AccountSid"
-    ResetId:
-      $ref: "models/models.yml#/components/schemas/ResetId"
-    BookingId:
-      $ref: "models/models.yml#/components/schemas/BookingId"
-    ConferenceId:
-      $ref: "models/models.yml#/components/schemas/ConferenceId"
-    ParticipantId:
-      $ref: "models/models.yml#/components/schemas/ParticipantId"
-    ScheduleId:
-      $ref: "models/models.yml#/components/schemas/ScheduleId"
-    SkillSetId:
-      $ref: "models/models.yml#/components/schemas/SkillSetId"
-    HostId:
-      $ref: "models/models.yml#/components/schemas/HostId"
-    Role:
-      $ref: "models/models.yml#/components/schemas/Role"
-    MediaRegion:
-      $ref: "models/models.yml#/components/schemas/MediaRegion"
-    BookingStatus:
-      $ref: "models/models.yml#/components/schemas/BookingStatus"
-    EventType:
-      $ref: "models/models.yml#/components/schemas/EventType"
-    EventContentType:
-      $ref: "models/models.yml#/components/schemas/EventContentType"
-    ConferenceType:
-      $ref: "models/models.yml#/components/schemas/ConferenceType"
-    Region:
-      $ref: "models/models.yml#/components/schemas/Region"
-    DialInGroup:
-      $ref: "models/models.yml#/components/schemas/DialInGroup"
-    RegistrationFieldType:
-      $ref: "models/models.yml#/components/schemas/RegistrationFieldType"
-    RegistrationFieldInputValidation:
-      $ref: "models/models.yml#/components/schemas/RegistrationFieldInputValidation"
-    Booking:
-      $ref: "models/bookings.yml#/components/schemas/Booking"
-    Conference:
-      $ref: "models/conferences.yml#/components/schemas/Conference"
-    Host:
-      $ref: "models/hosts.yml#/components/schemas/Host"
-    SkillSet:
-      $ref: "models/skillsets.yml#/components/schemas/SkillSet"
-    Participant:
-      $ref: "models/participants.yml#/components/schemas/Participant"
-    TelephonyPinVerify:
-      $ref: "models/telephony.yml#/components/schemas/TelephonyPinVerify"
-    BookingHeader:
-      $ref: "models/bookings.yml#/components/schemas/BookingHeader"
-    ConferenceHeader:
-      $ref: "models/conferences.yml#/components/schemas/ConferenceHeader"
-    HostHeader:
-      $ref: "models/hosts.yml#/components/schemas/HostHeader"
-    SkillSetHeader:
-      $ref: "models/skillsets.yml#/components/schemas/SkillSetHeader"
-    ParticipantHeader:
-      $ref: "models/participants.yml#/components/schemas/ParticipantHeader"
-    TelephonyPinHeader:
-      $ref: "models/telephony.yml#/components/schemas/TelephonyPinHeader"
-    BookingDetail:
-      $ref: "models/bookings.yml#/components/schemas/BookingDetail"
-    ConferenceDetail:
-      $ref: "models/conferences.yml#/components/schemas/ConferenceDetail"
-    HostDetail:
-      $ref: "models/hosts.yml#/components/schemas/HostDetail"
-    SkillSetDetail:
-      $ref: "models/skillsets.yml#/components/schemas/SkillSetDetail"
-    ParticipantDetail:
-      $ref: "models/participants.yml#/components/schemas/ParticipantDetail"
-    TelephonyPinDetail:
-      $ref: "models/telephony.yml#/components/schemas/TelephonyPinDetail"
-    Event:
-      $ref: "models/bookings.yml#/components/schemas/Event"
-    Account:
-      $ref: "models/bookings.yml#/components/schemas/Account"
-    Branding:
-      $ref: "models/bookings.yml#/components/schemas/Branding"
-    Options:
-      $ref: "models/bookings.yml#/components/schemas/Options"
-    Contact:
-      $ref: "models/bookings.yml#/components/schemas/Contact"
-    RegistrationField:
-      $ref: "models/bookings.yml#/components/schemas/RegistrationField"
-    RegistrationFieldOption:
-      $ref: "models/bookings.yml#/components/schemas/RegistrationFieldOption"
-    DeletedEventPayload:
-      $ref: "models/callbacks.yml#/components/schemas/DeletedEventPayload"
-    StatusCallbackPayload:
-      $ref: "models/callbacks.yml#/components/schemas/StatusCallbackPayload"
-    ReportCallbackPayload:
-      $ref: "models/callbacks.yml#/components/schemas/ReportCallbackPayload"
-    CompletedReport:
-      $ref: "models/callbacks.yml#/components/schemas/CompletedReport"
-    StatusCallbackPayloadEventData:
-      $ref: "models/callbacks.yml#/components/schemas/StatusCallbackPayloadEventData"
-    MetaDataLinks:
-      $ref: "models/metadata.yml#/components/schemas/MetaDataLinks"
-    MetaData:
-      $ref: "models/metadata.yml#/components/schemas/MetaData"
-    Links:
-      $ref: "models/metadata.yml#/components/schemas/Links"
-    ListMetaData:
-      $ref: "models/metadata.yml#/components/schemas/ListMetaData"
-    BookingItem:
-      $ref: "models/bookings.yml#/components/schemas/BookingItem"
-    ListBooking:
-      $ref: "models/bookings.yml#/components/schemas/ListBooking"
-    ConferenceItem:
-      $ref: "models/conferences.yml#/components/schemas/ConferenceItem"
-    ListConference:
-      $ref: "models/conferences.yml#/components/schemas/ListConference"
-    HostItem:
-      $ref: "models/hosts.yml#/components/schemas/HostItem"
-    ListHost:
-      $ref: "models/hosts.yml#/components/schemas/ListHost"
-    ParticipantItem:
-      $ref: "models/participants.yml#/components/schemas/ParticipantItem"
-    ListParticipant:
-      $ref: "models/participants.yml#/components/schemas/ListParticipant"
-    SkillSetItem:
-      $ref: "models/skillsets.yml#/components/schemas/SkillSetItem"
-    ListSkillSet:
-      $ref: "models/skillsets.yml#/components/schemas/ListSkillSet"
-    Asset:
-      $ref: "models/conferences.yml#/components/schemas/Asset"
-    AssetType:
-      $ref: "models/models.yml#/components/schemas/AssetType"
-    
-    TelephonyPin:
+      $ref: "models.yml#/components/schemas/AccountSid"
+    ContentId:
+      $ref: "models.yml#/components/schemas/ContentId"
+    ContentDetail:
       type: object
-      description: participant verification parameters
       required:
-        - pin
+        - name
       properties:
-        pin:
+        name:
           type: string
-          description: Speaker/Host Pin
-          example: 123456
+          description: Content Descriptive Name
+        tags:
+          type: array
+          description: Content Tags
+          items:
+            type: string
+        type:
+          type: string
+          enum:
+            - text
+        content:
+          oneOf:
+            - $ref: "#/components/schemas/TextType"
       additionalProperties: false
-      
-    SpeakerToken:
+    TextType:
       type: object
-      readOnly: true
-      required:
-        - token
-        - role
-        - notifiedId
       properties:
-        token:
+        value:
           type: string
-        role:
-          $ref: "#/components/schemas/Role"
-        notifiedId:
-          type: string
-          example: "AK1234"
-          description: "Notified Identifier. Must be Unique for each Participant"
-          
-    SpeakerTokenDetail:
-      type: object
-      writeOnly: true
-      required:
-        - email
-        - firstName
-        - lastName
-        - notifiedId
-        - bookingId
-        - conferenceId
-      properties:
-        email:
-          type: string
-          format: email
-          example: email@email.com
-        firstName:
-          type: string
-          example: John
-          description: |
-            *`PII MTL: 30 DAYS`*
-        lastName:
-          type: string
-          example: Doe
-          description: |
-            *`PII MTL: 30 DAYS`*
-        notifiedId:
-          type: string
-          example: "AK1234"
-          description: "Notified Identifier. Must be Unique for each Participant"
-        bookingId:
-          $ref: "#/components/schemas/BookingId"
-        conferenceId:
-          $ref: "#/components/schemas/ConferenceId"
-          
-    Token:
-      type: object
-      readOnly: true
-      required:
-        - token
-        - role
-        - hostId
-      properties:
-        token:
-          type: string
-          description: Bearer Token
-        role:
-          $ref: "#/components/schemas/Role"
-        hostId:
-          $ref: "#/components/schemas/HostId"
-
-    LoginDetail:
-      type: object
-      writeOnly: true
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-          example: email@email.com
-        password:
-          type: string
-          format: password
       additionalProperties: false
-
-    SetPasswordDetail:
+    Content:
+      allOf:
+        - $ref: "#/components/schemas/ContentHeader"
+        - $ref: "#/components/schemas/ContentDetail"
+        - $ref: "#/components/schemas/MetaDataLinks"
+    ContentHeader:
       type: object
-      writeOnly: true
-      required:
-        - accountSid
-        - resetToken
-        - newPassword
       properties:
         accountSid:
           $ref: "#/components/schemas/AccountSid"
-        resetToken:
-          $ref: "#/components/schemas/ResetId"
-        newPassword:
-          type: string
-          format: password
+        contentId:
+          $ref: "#/components/schemas/ContentId"
       additionalProperties: false
-
-    ParticipantVerifyInput:
+    MetaDataLinks:
       type: object
-      description: participant verification parameters
+      readOnly: true
       required:
-        - pin
+        - meta
       properties:
-        pin:
-          type: string
-          minLength: 6
-          maxLength: 8
-          description: Participants Login Pin
-          example: 123456
+        meta:
+          $ref: "#/components/schemas/MetaData"
       additionalProperties: false
-
-    ParticipantVerify:
-      allOf:
-      - type: object
-        description: participant verification result
-        readOnly: true
-        required:
-          - accountSid
-          - bookingId
-          - conferenceId
-          - participantId
-          - role
-          - token
-        properties:
-          accountSid:
-            $ref: "#/components/schemas/AccountSid"
-          bookingId:
-            $ref: "#/components/schemas/BookingId"
-          participantId:
-            $ref: "#/components/schemas/ParticipantId"
-          conferenceId:
-            $ref: "#/components/schemas/ConferenceId"
-          identity:
-            type: string
-            description: Friendly Participant Identity
-            example: "email@email.com"
-          role:
-            $ref: "#/components/schemas/Role"
-          token:
-            type: string
-            description: Authentication Token
-        additionalProperties: false
-      - $ref: "#/components/schemas/MetaDataLinks"
-      
+    MetaData:
+      type: object
+      readOnly: true
+      properties:
+        dateCreated:
+          type: string
+          format: date-time
+          description: The ISO 8601 date and time in GMT when the resource was created
+        dateUpdated:
+          type: string
+          format: date-time
+          description: The ISO 8601 date and time in GMT when the resource was last updated
   securitySchemes:
     BasicAuthorizer:
       description: |
-          Basic Authorization (Recommended):
+        Authorization Header or token query string (for use in Twilio Studio):
+          * **Basic Auth using Twilio AccountSid and Auth Token**
+          
+          Basic Auth (Recommended):
           ```curl
-          curl -X GET -H "Content-Type: application/json" -u username:password "https://notified-booking-api.london.ciptex.io"
+          curl -X GET -H "Content-Type: application/json" -u ACXXXXXXX:YOUR_TWILIO_AUTH_TOKEN "https://content-api.london.ciptex.com"
+          ```
+
+          Basic Auth as Querystring Parameter:
+          ```curl
+          curl -X GET -H "Content-Type: application/json" "https://content-api.london.ciptex.com?token=Basic+YOUR_BASE64_ENCODED_CREDENTIALS"
+          ```
+
+          * **Flex Auth using Twilio AccountSid and Flex Token**
+          
+          Bearer Token in Authorization Header (Recommended):
+          ```curl
+          curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ACXXXXXXX:YOUR_FLEX_AUTH_TOKEN" "https://content-api.london.ciptex.com"
+          ```
+
+          Bearer Token as Querystring Parameter:
+          ```curl
+          curl -X GET -H "Content-Type: application/json" "https://content-api.london.ciptex.com?token=Flex+YOUR_FLEX_AUTH_TOKEN"
           ```
       type: "apiKey"
       name: "Authorization"
       in: "header"
       x-amazon-apigateway-authorizer:
-        identitySource: "$request.header.Authorization"
         authorizerUri:
           Fn::Sub:
             - "arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${functionArn}/invocations"
-            - functionArn:
-                Fn::FindInMap:
+            - functionArn: 
+                Fn::FindInMap: 
                   - RegionMap
-                  - Ref: AWS::Region
+                  - Ref: AWS::Region 
                   - AuthFunctionArn
         authorizerCredentials:
           Fn::FindInMap: 
@@ -2135,34 +420,20 @@ components:
         authorizerResultTtlInSeconds: 0
         type: "request"
         enableSimpleResponses: true
-x-amazon-apigateway-request-validators:
-  full:
-    validateRequestBody: true
-    validateRequestParameters: true
-x-amazon-apigateway-request-validator: full
 x-amazon-apigateway-cors:
   allowMethods:
-    - GET
-    - POST
-    - PATCH
-    - PUT
-    - DELETE
-    - OPTIONS
+    - "GET"
+    - "POST"
+    - "PATCH"
+    - "PUT"
+    - "DELETE"
+    - "OPTIONS"
   allowHeaders:
     - "authorization"
     - "content-type"
   maxAge: 300
   allowCredentials: false
   allowOrigins:
-    - "https://vevent-registration.c.ciptex.io"
-    - "https://vevent-admin.c.ciptex.io"
-    - "https://vevent-conference.c.ciptex.io"
-    - "https://vevent-registration.q.ciptex.io"
-    - "https://vevent-admin.q.ciptex.io"
-    - "https://vevent-conference.q.ciptex.io"
-    - "https://vevent.com"
-    - "https://admin.vevent.com"
-    - "https://conference.vevent.com"
     - "http://localhost:3000"
-    - "http://localhost:3001"
-    - "http://localhost:3002"
+    - "https://*"
+x-amazon-apigateway-importexport-version: "1.0"

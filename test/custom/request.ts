@@ -4,7 +4,7 @@ import { OpenAPI } from './OpenAPI';
 
 export function request<T>(options: ApiRequestOptions): CancelablePromise<T> {
     return new CancelablePromise((resolve, reject, onCancel) => {
-        const url = `${OpenAPI.BASE}${options.path}`;
+        const url = `${OpenAPI.base}${options.path}`;
 
         try {
             // Do your request...

@@ -10,7 +10,7 @@ const params = program
     .name('openapi')
     .usage('[options]')
     .version(pkg.version)
-    .requiredOption('-i, --input <value>', 'OpenAPI specification, can be a path, url or string content (required)')
+    .requiredOption('-i, --input <value>', ' specification, can be a path, url or string content (required)')
     .requiredOption('-o, --output <value>', 'Output directory (required)')
     .option('-c, --client <value>', 'HTTP client to generate [fetch, xhr, node, axios]', 'fetch')
     .option('--useOptions', 'Use options instead of arguments')

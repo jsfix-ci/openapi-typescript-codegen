@@ -1,6 +1,5 @@
 function getUrl(options: ApiRequestOptions, config: OpenAPIConfig): string {
-    const path = config.ENCODE_PATH ? config.ENCODE_PATH(options.path) : options.path;
-    const url = `${config.BASE}${path}`;
+    const url = `${config.base}${options.path}`;
     if (options.query) {
         return `${url}${getQueryString(options.query)}`;
     }

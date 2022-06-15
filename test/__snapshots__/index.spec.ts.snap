@@ -182,25 +182,19 @@ type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
 
 export type OpenAPIConfig = {
-    BASE?: string;
-    VERSION?: string;
-    EDGE?: string;
-    TOKEN?: string | Resolver<string>;
-    USERNAME?: string | Resolver<string>;
-    PASSWORD?: string | Resolver<string>;
-    HEADERS?: Headers | Resolver<Headers>;
-    ENCODE_PATH?: (path: string) => string;
+    edge?: string;
+    token?: string | Resolver<string>;
+    accountSid?: string | Resolver<string>;
+    authToken?: string | Resolver<string>;
 }
 
 export const OpenAPI: OpenAPIConfig = {
-    BASE: 'http://localhost:3000/base',
-    VERSION: '1.0',
-    EDGE: 'gll',
-    TOKEN: undefined,
-    USERNAME: undefined,
-    PASSWORD: undefined,
-    HEADERS: undefined,
-    ENCODE_PATH: undefined,
+    base: 'http://localhost:3000/base',
+    version: '1.0',
+    edge: 'gll',
+    token: undefined,
+    accountSid: undefined,
+    authToken: undefined
 };"
 `;
 
@@ -281,8 +275,7 @@ function getQueryString(params: Record<string, any>): string {
 }
 
 function getUrl(options: ApiRequestOptions, config: OpenAPIConfig): string {
-    const path = config.ENCODE_PATH ? config.ENCODE_PATH(options.path) : options.path;
-    const url = \`\${config.BASE}\${path}\`;
+    const url = \`\${config.base}\${options.path}\`;
     if (options.query) {
         return \`\${url}\${getQueryString(options.query)}\`;
     }
@@ -327,14 +320,12 @@ async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
 }
 
 async function getHeaders(options: ApiRequestOptions, config: OpenAPIConfig): Promise<Headers> {
-    const token = await resolve(options, config.TOKEN);
-    const username = await resolve(options, config.USERNAME);
-    const password = await resolve(options, config.PASSWORD);
-    const additionalHeaders = await resolve(options, config.HEADERS);
+    const token = await resolve(options, config.token);
+    const username = await resolve(options, config.accountSid);
+    const password = await resolve(options, config.authToken);
 
     const defaultHeaders = Object.entries({
         Accept: 'application/json',
-        ...additionalHeaders,
         ...options.headers,
     })
         .filter(([_, value]) => isDefined(value))
