@@ -5,7 +5,7 @@ async function sendRequest(
     body: any,
     headers: Record<string, string>,
     onCancel: OnCancel,
-    openApiConfig: OpenAPIConfig
+    openApiConfig: OpenAPIConfig2
 ): Promise<AxiosResponse<any>> {
     const source = axios.CancelToken.source();
     const newUrl = openApiConfig.edge ? url.replace("{edge}", openApiConfig.edge) : url;

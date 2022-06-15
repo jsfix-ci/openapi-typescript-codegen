@@ -1,4 +1,4 @@
-function getUrl(options: ApiRequestOptions, config: OpenAPIConfig): string {
+function getUrl(options: ApiRequestOptions, config: OpenAPIConfig2): string {
     const url = `${config.base}${options.path}`;
     if (options.query) {
         return `${url}${getQueryString(options.query)}`;
