@@ -17,7 +17,7 @@ async function getHeaders(options: ApiRequestOptions, config: OpenAPIConfig2, fo
         headers['Authorization'] = `Flex ${accountSid}:${token}`;
     }
 
-    if (isStringWithValue(token)) {
+    if (!isStringWithValue(accountSid) && isStringWithValue(token)) {
         headers['Authorization'] = `Bearer ${token}`;
     }
 
