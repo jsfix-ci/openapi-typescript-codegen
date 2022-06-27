@@ -31,7 +31,7 @@ export function getOperationRequestBody(openApi: OpenApi, body: OpenApiRequestBo
     };
 
     if (body.content) {
-        const content = getContent(openApi, body.content);
+        const content = getContent(body.content);
         if (content) {
             requestBody.mediaType = content.mediaType;
             switch (requestBody.mediaType) {
