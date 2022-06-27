@@ -15,7 +15,7 @@
 - Quick, lightweight, robust and framework-agnostic 🚀
 - Supports generation of TypeScript clients
 - Supports generations of [Axios](#axios-support) client
-- Supports OpenAPI specification v2.0 and v3.0
+- Supports OpenAPI specification v3.0
 - Supports JSON and YAML files for input
 - Supports generation through CLI, Node.js and NPX
 - Supports tsc and @babel/plugin-transform-typescript
@@ -40,7 +40,7 @@ $ openapi --help
     -V, --version             output the version number
     -i, --input <value>       OpenAPI specification, can be a path, url or string content (required)
     -o, --output <value>      Output directory (required)
-    -c, --client <value>      HTTP client to generate [fetch, xhr, axios, node] (default: "fetch")
+    -c, --client <value>      HTTP client to generate [axios] (default: "axios")
     --useOptions              Use options instead of arguments
     --useUnionTypes           Use union types instead of enums
     --exportCore <value>      Write core files to disk (default: true)
@@ -56,7 +56,7 @@ $ openapi --help
   Examples
     $ openapi --input ./spec.json
     $ openapi --input ./spec.json --output ./dist
-    $ openapi --input ./spec.json --output ./dist --client xhr
+    $ openapi --input ./spec.json --output ./dist --client axios
 ```
 
 
@@ -336,65 +336,12 @@ enum EnumWithStrings {
 }
 ```
 
-
-### Nullable in OpenAPI v2
-In the OpenAPI v3 spec you can create properties that can be NULL, by providing a `nullable: true` in your schema.
-However, the v2 spec does not allow you to do this. You can use the unofficial `x-nullable` in your specification
-to generate nullable properties in OpenApi v2.
-
-```json
-{
-    "ModelWithNullableString": {
-        "required": ["requiredProp"],
-        "description": "This is a model with one string property",
-        "type": "object",
-        "properties": {
-            "prop": {
-                "description": "This is a simple string property",
-                "type": "string",
-                "x-nullable": true
-            },
-            "requiredProp": {
-                "description": "This is a simple string property",
-                "type": "string",
-                "x-nullable": true
-            }
-        }
-    }
-}
-```
-
 Generated code:
 ```typescript
 interface ModelWithNullableString {
     prop?: string | null,
     requiredProp: string | null,
 }
-```
-
-
-### Authorization
-The OpenAPI generator supports Bearer Token authorization. In order to enable the sending
-of tokens in each request you can set the token using the global OpenAPI configuration:
-
-```typescript
-import { OpenAPI } from './generated';
-
-OpenAPI.TOKEN = 'some-bearer-token';
-```
-
-Alternatively, we also support an async method that provides the token for each request.
-You can simply assign this method to the same `TOKEN `property in the global OpenAPI object.
-
-```typescript
-import { OpenAPI } from './generated';
-
-const getToken = async () => {
-    // Some code that requests a token...
-    return 'SOME_TOKEN';
-}
-
-OpenAPI.TOKEN = getToken;
 ```
 
 ### Generate client instance with `--exportClient` option
@@ -411,13 +358,18 @@ openapi --input ./spec.json --output ./dist --exportClient true --name DemoAppCl
 The generated client will be exported from the `index` file and can be used as shown below:
 ```typescript
 // create the client instance with server and authentication details
-const appClient = new DemoAppClient({ base: 'http://server-host.com', token: '1234' });
+const appClient = new DemoAppClient({ token: '1234' });
 
 // use the client instance to make the API call
 const res: OrganizationResponse = await appClient.organizations.createOrganization({
   name: 'OrgName',
   description: 'OrgDescription',
 });
+```
+
+```typescript
+// NODE.JS Only. You can provide AccountSid and AuthToken instead.
+const appClient = new DemoAppClient({ accountSid: 'ACXXX', authToken: "1234" });
 ```
 
 ### References

@@ -35,7 +35,7 @@ export function getOperationResponse(
     };
 
     if (response.content) {
-        const content = getContent(openApi, response.content);
+        const content = getContent(response.content);
         if (content) {
             if (content.schema.$ref?.startsWith('#/components/responses/')) {
                 content.schema = getRef<OpenApiSchema>(openApi, content.schema);

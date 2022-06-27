@@ -1,6 +1,5 @@
 import { isDefined } from '../../../utils/isDefined';
 import type { Dictionary } from '../../../utils/types';
-import type { OpenApi } from '../interfaces/OpenApi';
 import type { OpenApiMediaType } from '../interfaces/OpenApiMediaType';
 import type { OpenApiSchema } from '../interfaces/OpenApiSchema';
 
@@ -21,7 +20,7 @@ const BASIC_MEDIA_TYPES = [
     'multipart/batch',
 ];
 
-export function getContent(openApi: OpenApi, content: Dictionary<OpenApiMediaType>): Content | null {
+export function getContent(content: Dictionary<OpenApiMediaType>): Content | null {
     const basicMediaTypeWithSchema = Object.keys(content)
         .filter(mediaType => {
             const cleanMediaType = mediaType.split(';')[0].trim();
