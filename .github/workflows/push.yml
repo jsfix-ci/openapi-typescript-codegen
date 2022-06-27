@@ -10,13 +10,13 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.ref }}
+        token: ${{ secrets.BOT_PAT_TOKEN }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 16
         cache: "npm"
-        
      
     - run: npm ci
     - run: npm run prepublishOnly
@@ -28,22 +28,8 @@ jobs:
       uses: "phips28/gh-action-bump-version@master"
       with:
         tag-prefix: ''
-        skip-tag: true
-        skip-push: true
-        skip-commit: true
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Push files and tag
-      uses: Amraneze/push-to-protected-branch@v1.5.0
-      with:
-        repository: ${{ github.repository }}
-        branch_name: ${{ github.ref_name }}
-        github_token: ${{ secrets.BOT_PAT_TOKEN }}
-        commit_message: 'CI: build version ${{ steps.version-bump.outputs.newTag }} [actions skip]'
-        tag_version: ${{ steps.version-bump.outputs.newTag }}
-        files_to_commit: 'package.json'
-        create_tag: true
+        GITHUB_TOKEN: ${{ secrets.BOT_PAT_TOKEN }}
 
     - name:  'Output Step'
       env:
@@ -54,5 +40,4 @@ jobs:
       uses: JS-DevTools/npm-publish@v1
       with:
         token: ${{ secrets.NPM_TOKEN }}
-
     
