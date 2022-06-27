@@ -2,10 +2,7 @@ name: Deploy to NPM
 on:
   push:
     branches: [ master ]
-    
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,10 +28,23 @@ jobs:
       uses: "phips28/gh-action-bump-version@master"
       with:
         tag-prefix: ''
+        skip-tag: true
+        skip-push: true
+        skip-commit: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: "cat package.json"
-      run: cat ./package.json
+
+    - name: Push files and tag
+      uses: Amraneze/push-to-protected-branch@v1.5.0
+      with:
+        repository: ${{ github.repository }}
+        branch_name: ${{ github.ref_name }}
+        github_token: ${{ secrets.BOT_PAT_TOKEN }}
+        commit_message: 'CI: build version ${{ steps.version-bump.outputs.newTag }} [actions skip]'
+        tag_version: ${{ steps.version-bump.outputs.newTag }}
+        files_to_commit: 'package.json'
+        create_tag: true
+
     - name:  'Output Step'
       env:
         NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
