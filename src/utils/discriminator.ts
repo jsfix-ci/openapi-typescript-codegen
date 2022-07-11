@@ -27,7 +27,7 @@ export function findOneOfParentDiscriminator(openApi: OpenApi, parent?: Model): 
             }
         }
     }
-    return;
+    return undefined;
 }
 
 export function mapPropertyValue(discriminator: OpenApiDiscriminator, parent: Model): string {

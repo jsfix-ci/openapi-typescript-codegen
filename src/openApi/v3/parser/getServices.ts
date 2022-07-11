@@ -30,8 +30,8 @@ export function getServices(openApi: OpenApi): Service[] {
                         case 'patch':
                             // Each method contains an OpenAPI operation, we parse the operation
                             const op = path[method]!;
-
-                            let tags = op.tags?.filter(unique) || ['Service'];
+                            const uniqueTags = op.tags?.filter(unique);
+                            let tags = uniqueTags?.length ? uniqueTags : ['Unnamed'];
 
                             //Remove Tags that are not in the x-tagGroups Extension
                             if (tagGroups) {

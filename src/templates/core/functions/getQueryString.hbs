@@ -1,9 +1,25 @@
-function getQueryString(params: Record<string, any>): string {
-    const qs: string[] = [];
+const getQueryString = (params: Record<string, any>): string => {
+	const qs: string[] = [];
 
-    const append = (key: string, value: any) => {
-        qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
-    };
+	const append = (key: string, value: any) => {
+		qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+	};
+
+	const process = (key: string, value: any) => {
+		if (isDefined(value)) {
+			if (Array.isArray(value)) {
+				value.forEach(v => {
+					process(key, v);
+				});
+			} else if (typeof value === 'object') {
+				Object.entries(value).forEach(([k, v]) => {
+					process(`${key}[${k}]`, v);
+				});
+			} else {
+				append(key, value);
+			}
+		}
+	};
 
     Object.entries(params)
         .filter(([_, value]) => isDefined(value))
@@ -15,9 +31,9 @@ function getQueryString(params: Record<string, any>): string {
             }
         });
 
-    if (qs.length > 0) {
-        return `?${qs.join('&')}`;
-    }
+	if (qs.length > 0) {
+		return `?${qs.join('&')}`;
+	}
 
     return '';
 }

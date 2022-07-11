@@ -20,7 +20,7 @@ export interface OnCancel {
 }
 
 export class CancelablePromise<T> implements Promise<T> {
-    readonly [Symbol.toStringTag]: string = "Promise";
+	readonly [Symbol.toStringTag]!: string;
 
     #isPending: boolean;
     #isCancelled: boolean;
