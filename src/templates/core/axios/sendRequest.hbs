@@ -1,4 +1,4 @@
-async function sendRequest(
+const sendRequest = async <T>(
     options: ApiRequestOptions,
     url: string,
     formData: FormData | undefined,
@@ -6,14 +6,14 @@ async function sendRequest(
     headers: Record<string, string>,
     onCancel: OnCancel,
     openApiConfig: OpenAPIConfig2
-): Promise<AxiosResponse<any>> {
+): Promise<AxiosResponse<T>> => {
     const source = axios.CancelToken.source();
     const newUrl = openApiConfig.edge ? url.replace("{edge}", openApiConfig.edge) : url;
 
-    const config: AxiosRequestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         url: newUrl,
         headers,
-        data: body || formData,
+        data: body ?? formData,
         method: options.method,
         cancelToken: source.token,
         validateStatus: () => true,
