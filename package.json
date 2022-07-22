@@ -70,7 +70,7 @@
         "form-data": "^4.0.0",
         "handlebars": "^4.7.6",
         "json-schema-ref-parser": "^9.0.7",
-        "node-fetch": "^2.6.6"
+        "node-fetch": "^3.2.9"
     },
     "devDependencies": {
         "@babel/cli": "7.16.7",
